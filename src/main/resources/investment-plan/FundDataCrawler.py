@@ -3,7 +3,7 @@ import time
 import execjs
 import pandas as pd
 
-folderCode = './investment-plan/data/'
+folderCode = './data/'
 
 class FundDataCrawler:
     def getUrl(self, fundCode):

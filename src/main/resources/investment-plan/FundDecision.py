@@ -1,15 +1,11 @@
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
 import warnings
 import math
 
 class FundDecision:
 
     warnings.filterwarnings('ignore')
-    plt.rcParams['font.family'] = 'SimHei'
-    plt.rcParams['axes.unicode_minus'] = False
-    plt.rcParams['figure.figsize'] = (12, 8)
 
     def getData(self, fundData, start, end):
         '''
@@ -255,25 +251,6 @@ class FundDecision:
         
         return all, rate, price, mean, wave, last_yield
         
-    def myplot(self, df1, res, buy, titlename):
-        '''
-        绘制定投结果图
-        '''
-        plt.figure()
-        df1['收盘价'].plot(label="大盘指数")
-        plt.scatter(buy.keys(), buy.values(),
-                    color="brown", marker=".", label="定投记录")
-        plt.legend(loc='best')
-        plt.ylabel("指数")
-        plt.twinx()
-
-        res['账户资产'].plot(color="red")
-        res['投资金额'].plot(color="orange")
-        plt.ylabel("元")
-        plt.legend()
-        plt.title(titlename+":{:.2f}%".format(res.tail(1)["收益率"][0]))
-        plt.show()
-
     def stratege1(self, mean, wave, lastPrice, lastYield, totalYield):
         '''
         定投策略
