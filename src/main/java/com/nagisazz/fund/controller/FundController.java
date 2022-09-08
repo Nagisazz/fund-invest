@@ -1,4 +1,4 @@
-package com.nagisazz.fund.common.controller;
+package com.nagisazz.fund.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

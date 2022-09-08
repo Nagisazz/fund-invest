@@ -1,11 +1,11 @@
 package com.nagisazz.fund.service;
 
 import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.stereotype.Service;
-import org.springframework.util.ResourceUtils;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 
 @Slf4j
@@ -40,22 +40,24 @@ public class FundService {
 
     public String calculate() {
         Process proc;
-        String res = null;
-        String resErr = null;
+        StringBuilder res = new StringBuilder();
+        StringBuilder resErr = new StringBuilder();
+        String tmpErr = "";
+        String tmp = "";
         try {
-            String absolutePath = ResourceUtils.getFile("classpath:investment-plan/DecisionMain.py").getAbsolutePath();
-            System.out.println(absolutePath);
+//            String absolutePath = ResourceUtils.getFile("classpath:investment-plan/DecisionMain.py").getAbsolutePath();
+//            System.out.println(absolutePath);
             String[] param = new String[]{"python",
-                    absolutePath, "-c 161725", "-d 20190821", "-f 7", "-i 3000", "-b 7813", "-w 0.9738", "-y 0.053", "-m 250", "-v 5", "-t 2"};
+                    "/nagisa/invest/DecisionMain.py", "-c 161725", "-d 20190821", "-f 7", "-i 3000", "-b 7813", "-w 0.9738", "-y 0.053", "-m 250", "-v 5", "-t 2"};
             proc = Runtime.getRuntime().exec(param);
             BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream(), StandardCharsets.UTF_8));
-            while ((res = in.readLine()) != null) {
-                System.out.println(res);
+            while ((tmp = in.readLine()) != null) {
+                res.append(tmp);
             }
             in.close();
             BufferedReader err = new BufferedReader(new InputStreamReader(proc.getErrorStream(), StandardCharsets.UTF_8));
-            while ((resErr = err.readLine()) != null) {
-                System.out.println(resErr);
+            while ((tmpErr = err.readLine()) != null) {
+                resErr.append(tmpErr);
             }
             err.close();
             proc.waitFor();
@@ -63,6 +65,8 @@ public class FundService {
             log.error("计算失败", e);
             e.printStackTrace();
         }
-        return res;
+        log.info("返回结果：{}", res);
+        log.info("失败结果：{}", resErr);
+        return String.valueOf(res);
     }
 }
