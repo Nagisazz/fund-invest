@@ -3,7 +3,7 @@ import time
 import execjs
 import pandas as pd
 
-folderCode = './data/'
+folderCode = '/nagisa/invest/data/'
 
 class FundDataCrawler:
     def getUrl(self, fundCode):
@@ -27,6 +27,24 @@ class FundDataCrawler:
         fileFund = folderCode + fundCode + ".csv"
         dataframe.to_csv(fileFund,index=False,sep=',')
 
+        data=pd.read_csv(fileFund)
+        '''
+        数据预处理
+        1、将日期转换为时间序列并设置为索引
+        2、将数据按时间序列升序排序
+        3、删除缺失值
+        4、将涨跌幅的单位转换为小数
+        '''
+        data['日期']=pd.to_datetime(data['日期'])
+        data=data.set_index('日期')
+        data=data.sort_index()
+        data.drop(data[data['涨跌幅']=="None"].index,axis=0,inplace=True)
+        data['涨跌幅']=data['涨跌幅'].astype('float')
+        data['涨跌幅']/=100
+        return data
+
+    def readData(self, fundCode):
+        fileFund = folderCode + fundCode + ".csv"
         data=pd.read_csv(fileFund)
         '''
         数据预处理

@@ -1,5 +1,6 @@
 package com.nagisazz.fund.controller;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,7 +17,10 @@ public class FundController {
     private FundService fundService;
 
     @GetMapping("/test")
-    public String test(){
+    public String test() {
+        if (StringUtils.isBlank(fundService.crawler())) {
+            return "false";
+        }
         return fundService.calculate();
     }
 }

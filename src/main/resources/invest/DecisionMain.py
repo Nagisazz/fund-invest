@@ -35,7 +35,7 @@ mean_days = int(args.mean)
 wave_days = int(args.wave)
 type = int(args.type)
 
-fundData = fundDataCrawler.getFund(code)
+fundData = fundDataCrawler.readData(code)
 all, rate, price, mean, wave, last_yield = fundDecision.calculate_invest(fundData, date, frequence,
  invest_money, balance, current_worth, current_yield, mean_days, wave_days, type)
 print(all, rate, price, mean, wave, last_yield)
