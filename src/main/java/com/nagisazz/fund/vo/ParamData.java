@@ -13,12 +13,26 @@ import lombok.ToString;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserParam {
+public class ParamData {
 
     private String code;
 
-    private String avatarUrl;
+    private String date;
 
-    private String nickName;
+    private String frequence;
+
+    private String invest;
+
+    private String balance;
+
+    private String worth;
+
+    private String yields;
+
+    private String mean;
+
+    private String wave;
+
+    private String type;
 
 }
