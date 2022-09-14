@@ -46,7 +46,7 @@ public class FundService {
         return String.valueOf(res);
     }
 
-    public ResultData calculate(ParamData paramData) {
+    public ResultData invest(ParamData paramData) {
         Process proc;
         StringBuilder res = new StringBuilder();
         StringBuilder resErr = new StringBuilder();
@@ -73,12 +73,19 @@ public class FundService {
             log.error("计算失败", e);
             e.printStackTrace();
         }
-        log.info("calculate返回结果：{}", res);
-        log.info("calculate失败结果：{}", resErr);
+        log.info("invest返回结果：{}", res);
+        log.info("invest失败结果：{}", resErr);
 
         String[] data = String.valueOf(res).split(" ");
         ResultData resultData = ResultData.builder().all(data[0]).rate(data[1]).price(data[2]).mean(data[3]).wave(data[4]).lastYield(data[5]).build();
-        log.info("calculate返回封装结果：{}", resultData);
+        log.info("invest返回封装结果：{}", resultData);
         return resultData;
+    }
+
+    public ResultData start(ParamData paramData){
+        // 开启定时任务
+
+        // 计算本次定投
+        return invest(paramData);
     }
 }

@@ -17,8 +17,8 @@ public class FundController {
     @Autowired
     private FundService fundService;
 
-    @GetMapping("/cal")
-    public ResultData cal(@RequestParam("data") String data) {
+    @GetMapping("/invest")
+    public ResultData invest(@RequestParam("data") String data) {
         log.info("参数：{}", data);
         String[] params = data.split("\\$");
         ParamData paramData = ParamData.builder().code(params[0]).date(params[1]).frequence(params[2]).invest(params[3]).balance(params[4])
@@ -26,6 +26,6 @@ public class FundController {
         if (StringUtils.isBlank(fundService.crawler(paramData.getCode()))) {
             return null;
         }
-        return fundService.calculate(paramData);
+        return fundService.invest(paramData);
     }
 }

@@ -269,7 +269,7 @@ body{
                 }
                 console.log(requestValue.join('$'))
     
-                let urlData = 'http://1.15.87.105:12500/fund/cal' + "?data=" + requestValue.join('$')
+                let urlData = 'http://1.15.87.105:12500/fund/invest' + "?data=" + requestValue.join('$')
                 let xhr = new XMLHttpRequest();
                 xhr.open('GET', urlData, true);
                 xhr.setRequestHeader("Access-Control-Allow-Origin", "*");
