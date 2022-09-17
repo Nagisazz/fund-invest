@@ -83,7 +83,7 @@ public class FundService {
     }
 
     public ResultData start(ParamData paramData){
-        // 开启定时任务
+        // 获取
 
         // 计算本次定投
         return invest(paramData);

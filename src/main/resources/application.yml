@@ -15,3 +15,6 @@ server:
   port: 9200
   servlet:
     context-path: /fund
+
+url:
+  fund: https://fundgz.1234567.com.cn/js/{code}.js?rt=
