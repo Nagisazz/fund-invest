@@ -35,3 +35,8 @@ xxl:
       port: 9201
       logpath: /nagisa/logs/undercover/job
       logretentiondays: 10
+
+pushplus:
+  url: http://www.pushplus.plus/send?token={0}&title={1}&content={2}&topic={3}
+  token: 123
+  groupId: 1

@@ -1,18 +1,14 @@
 package com.nagisazz.fund.service;
 
 import com.alibaba.fastjson.JSON;
-import com.nagisazz.fund.entity.FundInfo;
-import com.nagisazz.fund.entity.InvestLog;
 import com.nagisazz.fund.vo.FundTodayInfo;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.chrono.ChronoLocalDate;
 
 @Slf4j
@@ -42,12 +38,5 @@ public class FundInfoService {
         fundUrl = fundUrl.replace("{code}", fundCode) + System.currentTimeMillis();
         String res = restTemplate.getForObject(fundUrl, String.class);
         return JSON.parseObject(res.substring(8, res.length() - 2), FundTodayInfo.class);
-    }
-
-    public static void main(String[] args) {
-        FundInfo fundInfo = FundInfo.builder().balance((double) 11).valid(1).build();
-        InvestLog investLog = InvestLog.builder().worth(Double.valueOf(11)).build();
-        BeanUtils.copyProperties(fundInfo,investLog);
-        System.out.println(investLog);
     }
 }
