@@ -69,4 +69,8 @@ public class FundService {
     public List<InvestLog> getInfo(Long fundId) {
         return investLogMapper.selectList(InvestLog.builder().fundId(fundId).build());
     }
+
+    public void stop(Long fundId) {
+        fundInfoMapper.updateByPrimaryKeySelective(FundInfo.builder().id(fundId).valid(0).build());
+    }
 }

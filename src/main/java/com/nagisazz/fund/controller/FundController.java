@@ -88,4 +88,11 @@ public class FundController {
         List<InvestLog> investLogs = fundService.getInfo(fundId);
         return OperationResult.buildSuccess(investLogs);
     }
+
+    @GetMapping("stop")
+    @ResponseBody
+    public OperationResult stop(@RequestParam("fundId") Long fundId){
+        fundService.stop(fundId);
+        return OperationResult.buildSuccess(null);
+    }
 }
