@@ -73,12 +73,12 @@ public class InvestLog {
     /**
      * 均线金额
      */
-    private Double mean;
+    private Double meanAmount;
 
     /**
      * 振幅比率
      */
-    private Double wave;
+    private Double waveAmount;
 
     /**
      * 创建时间

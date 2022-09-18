@@ -1,4 +1,3 @@
-import pandas as pd
 import argparse
 from FundDataCrawler import FundDataCrawler
 from FundDecision import FundDecision

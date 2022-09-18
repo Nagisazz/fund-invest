@@ -104,4 +104,9 @@ public class FundInfo {
      * 更新时间
      */
     private LocalDateTime updateTime;
+
+    /**
+     * 上次定投日期
+     */
+    private LocalDateTime lastInvestTime;
 }

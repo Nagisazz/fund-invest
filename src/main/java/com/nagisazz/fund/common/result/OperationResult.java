@@ -31,11 +31,11 @@ public class OperationResult {
         return buildVo(resultEnum, null);
     }
 
-    public static OperationResult buildVo(Object data) {
+    public static OperationResult buildSuccess(Object data) {
         return buildVo(ResultEnum.SUCCESS, data);
     }
 
-    public static OperationResult buildVo() {
-        return buildVo(ResultEnum.SUCCESS, null);
+    public static OperationResult buildFail(Object data) {
+        return buildVo(ResultEnum.FAIL, data);
     }
 }

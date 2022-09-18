@@ -1,91 +1,72 @@
 package com.nagisazz.fund.service;
 
+import com.nagisazz.fund.common.result.OperationResult;
+import com.nagisazz.fund.dao.FundInfoExtendMapper;
+import com.nagisazz.fund.dao.base.InvestLogMapper;
+import com.nagisazz.fund.entity.FundInfo;
+import com.nagisazz.fund.entity.InvestLog;
 import lombok.extern.slf4j.Slf4j;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
-
-import com.nagisazz.fund.vo.ParamData;
-import com.nagisazz.fund.vo.ResultData;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Slf4j
 @Service
 public class FundService {
 
-    public String crawler(String code) {
-        Process proc;
-        StringBuilder res = new StringBuilder();
-        StringBuilder resErr = new StringBuilder();
-        String tmpErr = "";
-        String tmp = "";
+    @Autowired
+    private FundInfoExtendMapper fundInfoMapper;
+
+    @Autowired
+    private FundInfoService fundInfoService;
+
+    @Autowired
+    private InvestLogMapper investLogMapper;
+
+    /**
+     * 开始持续计算
+     *
+     * @param params（code，balance，profileAmount，yields，worth，frequence，investMoney，mean，wave，type）
+     * @return
+     */
+    public OperationResult start(String[] params) {
+        final String fundName = fundInfoService.getFundName(params[0]);
         try {
-            String[] param = new String[]{"python",
-                    "/nagisa/invest/CrawlerMain.py", code};
-            proc = Runtime.getRuntime().exec(param);
-            BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream(), StandardCharsets.UTF_8));
-            while ((tmp = in.readLine()) != null) {
-                res.append(tmp);
-            }
-            in.close();
-            BufferedReader err = new BufferedReader(new InputStreamReader(proc.getErrorStream(), StandardCharsets.UTF_8));
-            while ((tmpErr = err.readLine()) != null) {
-                resErr.append(tmpErr);
-            }
-            err.close();
-            proc.waitFor();
+            FundInfo fundInfo = FundInfo.builder()
+                    .name(fundName)
+                    .code(params[0])
+                    .balance(Double.valueOf(params[1]))
+                    .profileAmount(Double.valueOf(params[2]))
+                    .yields(Double.valueOf(params[3]))
+                    .worth(Double.valueOf(params[4]))
+                    .buyAmount(Double.parseDouble(params[1]) - Double.parseDouble(params[2]))
+                    .saleAmount((double) 0)
+                    .investAmount(Double.parseDouble(params[1]) - Double.parseDouble(params[2]))
+                    .investNum(0)
+                    .frequence(Integer.valueOf(params[1]))
+                    .investMoney(Integer.valueOf(params[2]))
+                    .mean(Integer.valueOf(params[7]))
+                    .wave(Integer.valueOf(params[8]))
+                    .type(Integer.valueOf(params[9]))
+                    .valid(1)
+                    .createTime(LocalDateTime.now())
+                    .updateTime(LocalDateTime.now())
+                    .build();
+            fundInfoMapper.insertSelective(fundInfo);
         } catch (Exception e) {
-            log.error("计算失败", e);
-            e.printStackTrace();
+            log.error("开始持续计算失败", e);
+            return OperationResult.buildFail("参数错误，开始持续计算失败");
         }
-        log.info("crawler返回结果：{}", res);
-        log.info("crawler失败结果：{}", resErr);
-        return String.valueOf(res);
+        return OperationResult.buildSuccess("开始持续计算成功");
     }
 
-    public ResultData invest(ParamData paramData) {
-        Process proc;
-        StringBuilder res = new StringBuilder();
-        StringBuilder resErr = new StringBuilder();
-        String tmpErr = "";
-        String tmp = "";
-        try {
-            String[] param = new String[]{"python",
-                    "/nagisa/invest/DecisionMain.py", "-c" + paramData.getCode(), "-d" + paramData.getDate(),
-                    "-f" + paramData.getFrequence(), "-i" + paramData.getInvest(), "-b" + paramData.getBalance(), "-w" + paramData.getWorth(),
-                    "-y" + paramData.getYields(), "-m" + paramData.getMean(), "-v" + paramData.getWave(), "-t" + paramData.getType()};
-            proc = Runtime.getRuntime().exec(param);
-            BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream(), StandardCharsets.UTF_8));
-            while ((tmp = in.readLine()) != null) {
-                res.append(tmp);
-            }
-            in.close();
-            BufferedReader err = new BufferedReader(new InputStreamReader(proc.getErrorStream(), StandardCharsets.UTF_8));
-            while ((tmpErr = err.readLine()) != null) {
-                resErr.append(tmpErr);
-            }
-            err.close();
-            proc.waitFor();
-        } catch (Exception e) {
-            log.error("计算失败", e);
-            e.printStackTrace();
-        }
-        log.info("invest返回结果：{}", res);
-        log.info("invest失败结果：{}", resErr);
-
-        String[] data = String.valueOf(res).split(" ");
-        ResultData resultData = ResultData.builder().all(data[0]).rate(data[1]).price(data[2]).mean(data[3]).wave(data[4]).lastYield(data[5]).build();
-        log.info("invest返回封装结果：{}", resultData);
-        return resultData;
+    public List<FundInfo> getList() {
+        return fundInfoMapper.selectList(FundInfo.builder().valid(1).build());
     }
 
-    public ResultData start(ParamData paramData){
-        // 获取
-
-        // 计算本次定投
-        return invest(paramData);
+    public List<InvestLog> getInfo(Long fundId) {
+        return investLogMapper.selectList(InvestLog.builder().fundId(fundId).build());
     }
 }

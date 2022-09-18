@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nagisazz.fund.dao.FundInfoExtendMapper">
+
+    <select id="selectTodayInvestLog" resultType="com.nagisazz.fund.entity.InvestLog">
+        select
+        <include refid="com.nagisazz.fund.dao.base.InvestLogMapper.Base_Column_List" />
+        from t_invest_log
+        where n_fund_id = #{fundId,jdbcType=BIGINT}
+        and TO_DAYS(dt_create_time) = TO_DAYS(NOW())
+    </select>
+
+    <select id="selectNeedInvest" resultMap="com.nagisazz.fund.dao.base.FundInfoMapper.BaseResultMap">
+        SELECT
+            <include refid="com.nagisazz.fund.dao.base.FundInfoMapper.Base_Column_List" />
+        FROM
+	        `t_fund_info`
+        WHERE
+            n_valid = 1 AND
+            (dt_last_invest_time is null or to_days(now()) - to_days( dt_last_invest_time ) >= n_frequence)
+    </select>
+</mapper>

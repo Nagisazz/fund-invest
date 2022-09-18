@@ -5,4 +5,4 @@ code = sys.argv[1]
 
 fundDataCrawler = FundDataCrawler()
 fundData = fundDataCrawler.getFund(code)
-print(fundData)
+print(fundData.size)
