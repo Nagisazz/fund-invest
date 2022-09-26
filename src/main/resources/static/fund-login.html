@@ -159,9 +159,9 @@ a{
     <div class="fund-container">
         <div class="title">
             <div class="main-title">
-                <a href="http://1.15.87.105:12500/fund/fund-search.html" class="tab">查询</a>  
+                <a href="http://localhost:9200/fund/fund-search.html" class="tab">查询</a>
                 <span>朱陈基金 </span>
-                <a href="http://1.15.87.105:12500/fund/fund-list.html" class="tab">日志</a>
+                <a href="http://localhost:9200/fund/fund-list.html" class="tab">日志</a>
             </div>
             <div class="sub-title">FUND OPERATION GUIDE</div>
         </div>
@@ -184,7 +184,7 @@ a{
             <div class="login" onclick="onLogin()">
                 登录
             </div>
-            <a class="have-login" href="http://1.15.87.105:12500/fund/fund-search.html">已登录，去查询页！</a>
+            <a class="have-login" href="http://localhost:9200/fund/fund-search.html">已登录，去查询页！</a>
         </div>
     </div>
 
@@ -200,7 +200,7 @@ a{
 
 
         function onLogin() {
-            let dataUrl = 'http://1.15.87.105:12500/fund/login?username=' + document.getElementById('user_name').value +
+            let dataUrl = 'http://localhost:9200/fund/login?username=' + document.getElementById('user_name').value +
                     '&password=' + document.getElementById('password').value
             let xhr = new XMLHttpRequest();
             xhr.open('POST', dataUrl, true);
@@ -208,7 +208,7 @@ a{
             xhr.send();
             xhr.onreadystatechange = function() {
                 if(xhr.readyState === 4 && xhr.status ===200){
-                    window.location.href = 'http://1.15.87.105:12500/fund/fund-search.html';
+                    window.location.href = 'http://localhost:9200/fund/fund-search.html';
                 }
             }
             xhr.onerror = function (error) {

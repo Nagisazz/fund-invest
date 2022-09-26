@@ -185,9 +185,9 @@ a{
     <div class="fund-container">
         <div class="title">
             <div class="main-title">
-                <a href="http://1.15.87.105:12500/fund/fund-login.html" class="tab">登录</a>  
+                <a href="http://localhost:9200/fund/fund-login.html" class="tab">登录</a>
                 <span>朱陈基金 </span>
-                <a href="http://1.15.87.105:12500/fund/fund-search.html" class="tab">查询</a>
+                <a href="http://localhost:9200/fund/fund-search.html" class="tab">查询</a>
             </div>
             <div class="sub-title">FUND OPERATION GUIDE</div>
         </div>
@@ -284,44 +284,9 @@ a{
         //             lastInvestTime: '20220915', // 上次定投日期
         //         }
         //     ];
+        let list = [];
         window.onload = function() {
-            
-            const list = [];
-            let urlData = 'http://1.15.87.105:12500/fund/list';
-            let xhr = new XMLHttpRequest();
-            xhr.open('GET', urlData, true);
-            xhr.setRequestHeader("Access-Control-Allow-Origin", "*");
-            xhr.send();
-            xhr.onreadystatechange = function() {
-                if(xhr.readyState === 4 && xhr.status ===200){
-                    list = xhr.responseText;
-                    let str = '';
-                    if (list &&list.length > 0) {
-                        for (let i = 0; i < list.length; i++) {
-                            str = str + '<div class="tr">' +
-                                '<span class="td">' + list[i].name + '</span>' +
-                                '<span class="td">' + list[i].balance + '</span>' +
-                                '<span class="td">' + list[i].yields + '</span>' +
-                                '<span class="td">' + list[i].profileAmount + '</span>' +
-                                '<span class="td">' + list[i].createTime + '</span>' +
-                                '<div class="td operation">' +
-                                '<div onclick="showMore(' + list[i].id + ')">显示更多</div>' +
-                                '<div onclick="onStop(' + list[i].id + ')">停止执行</div>' +
-                                '<div onclick="toDetail(' + list[i].id + ')">查看详情</div>' +
-                                '</div>' +
-                            '</div>'
-                        }
-                    } else {
-                        str = '<div class="no-data">暂无数据！</div>';
-                    }
-                    document.getElementById('tr-table').innerHTML = str;
-                }
-            }
-            xhr.onerror = function (error) {
-                str = '<div class="no-data">暂无数据！</div>';
-                document.getElementById('tr-table').innerHTML = str;
-                console.log(error)
-            }
+            this.getInitList();
 
             // let str = '';
             // for (let i = 0; i < list.length; i++) {
@@ -339,6 +304,45 @@ a{
             //     '</div>'
             // }
             // document.getElementById('tr-table').innerHTML = str;
+        }
+
+        function getInitList() {
+            let urlData = 'http://localhost:9200/fund/list';
+            let xhr = new XMLHttpRequest();
+            xhr.open('GET', urlData, true);
+            xhr.setRequestHeader("Access-Control-Allow-Origin", "*");
+            xhr.send();
+            xhr.onreadystatechange = function() {
+                if(xhr.readyState === 4 && xhr.status ===200){
+                    console.log(JSON.parse(xhr.responseText).data);
+                    list = JSON.parse(xhr.responseText).data;
+                    let str = '';
+                    if (list &&list.length > 0) {
+                        for (let i = 0; i < list.length; i++) {
+                            str = str + '<div class="tr">' +
+                                '<span class="td">' + list[i].name + '</span>' +
+                                '<span class="td">' + list[i].balance + '</span>' +
+                                '<span class="td">' + list[i].yields + '</span>' +
+                                '<span class="td">' + list[i].profileAmount + '</span>' +
+                                '<span class="td">' + list[i].createTime + '</span>' +
+                                '<div class="td operation">' +
+                                '<div onclick="showMore(' + list[i].id + ')">显示更多</div>' +
+                                '<div onclick="onStop(' + list[i].id + ')">停止执行</div>' +
+                                '<div onclick="toDetail(' + list[i].id + ')">查看详情</div>' +
+                                '</div>' +
+                                '</div>'
+                        }
+                    } else {
+                        str = '<div class="no-data">暂无数据！</div>';
+                    }
+                    document.getElementById('tr-table').innerHTML = str;
+                }
+            }
+            xhr.onerror = function (error) {
+                str = '<div class="no-data">暂无数据！</div>';
+                document.getElementById('tr-table').innerHTML = str;
+                console.log(error)
+            }
         }
 
         
@@ -391,7 +395,8 @@ a{
         }
 
         function onStop(id) {
-            let urlData = 'http://1.15.87.105:12500/fund/stop' + "?fundId=" + id
+            let that = this;
+            let urlData = 'http://localhost:9200/fund/stop' + "?fundId=" + id
             let xhr = new XMLHttpRequest();
             xhr.open('GET', urlData, true);
             xhr.setRequestHeader("Access-Control-Allow-Origin", "*");
@@ -399,6 +404,7 @@ a{
             xhr.onreadystatechange = function() {
                 if(xhr.readyState === 4 && xhr.status ===200){
                     console.log('改定投停止执行');
+                    that.getInitList();
                 }
             }
             xhr.onerror = function (error) {
@@ -414,7 +420,7 @@ a{
             modalContainer.style.width = '80%';
             modalContainer.style.marginLeft = '10%';
 
-            let urlData = 'http://1.15.87.105:12500/fund/info' + "?fundId=" + id
+            let urlData = 'http://localhost:9200/fund/info' + "?fundId=" + id
             let xhr = new XMLHttpRequest();
             xhr.open('GET', urlData, true);
             xhr.setRequestHeader("Access-Control-Allow-Origin", "*");
