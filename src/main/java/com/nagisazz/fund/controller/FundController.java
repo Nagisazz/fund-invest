@@ -40,14 +40,14 @@ public class FundController {
                                  HttpSession session) {
 
         if (!loginName.equals(username) || !loginPassword.equals(password)){
-            return "用户名或密码不正确，登录失败";
+            return "redirect:fund-login.html";
         }
 
         //登录成功后，将uid和username存入到HttpSession中
         session.setAttribute("uid", username);
 
         // 将以上返回值和状态码OK封装到响应结果中并返回
-        return "redirect:fund-login.html";
+        return "redirect:fund-search.html";
     }
 
     /**

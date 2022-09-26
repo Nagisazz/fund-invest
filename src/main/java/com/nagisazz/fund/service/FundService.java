@@ -32,8 +32,8 @@ public class FundService {
      * @return
      */
     public OperationResult start(String[] params) {
-        final String fundName = fundInfoService.getFundName(params[0]);
         try {
+            final String fundName = fundInfoService.getFundName(params[0]);
             FundInfo fundInfo = FundInfo.builder()
                     .name(fundName)
                     .code(params[0])

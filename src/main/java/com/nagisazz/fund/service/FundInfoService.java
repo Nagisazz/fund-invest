@@ -5,9 +5,13 @@ import com.nagisazz.fund.vo.FundTodayInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.chrono.ChronoLocalDate;
 
@@ -25,18 +29,21 @@ public class FundInfoService {
         return getInfo(fundCode).getName();
     }
 
-    public boolean judgeTrading(String fundCode){
+    public boolean judgeTrading(String fundCode) {
         final FundTodayInfo info = getInfo(fundCode);
         return LocalDate.now().isEqual(ChronoLocalDate.from(info.getGztime()));
     }
 
-    public String getWorth(String fundCode){
+    public String getWorth(String fundCode) {
         return getInfo(fundCode).getGsz();
     }
 
     private FundTodayInfo getInfo(String fundCode) {
         fundUrl = fundUrl.replace("{code}", fundCode) + System.currentTimeMillis();
-        String res = restTemplate.getForObject(fundUrl, String.class);
+        HttpHeaders httpHeaders = new HttpHeaders();
+        HttpEntity<Object> httpEntity = new HttpEntity<>(null, httpHeaders);
+        byte[] bytes = restTemplate.exchange(fundUrl, HttpMethod.GET, httpEntity, String.class).getBody().getBytes(StandardCharsets.ISO_8859_1);
+        String res = new String(bytes, StandardCharsets.UTF_8);
         return JSON.parseObject(res.substring(8, res.length() - 2), FundTodayInfo.class);
     }
 }
