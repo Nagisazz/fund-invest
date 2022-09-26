@@ -28,9 +28,6 @@ public class FundCalService {
     @Autowired
     private InvestLogMapper investLogMapper;
 
-    @Autowired
-    private FundInfoService fundInfoService;
-
     /**
      * 普通交易日计算收益
      *
@@ -102,6 +99,7 @@ public class FundCalService {
         // 记录当天投资日志信息
         InvestLog investLog = new InvestLog();
         BeanUtils.copyProperties(fundInfo, investLog);
+        investLog.setId(null);
         investLog.setFundId(fundInfo.getId());
         investLog.setInvestType(invest.getInvestType());
         investLog.setPrice(invest.getPrice());
@@ -111,6 +109,8 @@ public class FundCalService {
         investLog.setCreateTime(LocalDateTime.now());
         investLog.setUpdateTime(LocalDateTime.now());
         investLogMapper.insertSelective(investLog);
+
+        investLogMapper.deleteByPrimaryKey(invest.getId());
     }
 
     /**

@@ -19,6 +19,7 @@ import java.util.List;
 
 @Slf4j
 @Controller
+@CrossOrigin
 public class FundController {
 
     @Autowired
@@ -46,7 +47,7 @@ public class FundController {
         session.setAttribute("uid", username);
 
         // 将以上返回值和状态码OK封装到响应结果中并返回
-        return "redirect:fund.html";
+        return "redirect:fund-login.html";
     }
 
     /**

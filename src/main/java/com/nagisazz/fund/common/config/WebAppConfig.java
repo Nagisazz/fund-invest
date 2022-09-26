@@ -20,7 +20,7 @@ public class WebAppConfig implements WebMvcConfigurer {
         List<String> patterns = new ArrayList<String>();
         patterns.add("/css/**");
         patterns.add("/js/**");
-        patterns.add("/login.html");
+        patterns.add("/*.html");
         patterns.add("/login");
 
         // 添加拦截器

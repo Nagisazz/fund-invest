@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>基金</title>
+    <title>查询</title>
 </head>
 
 <style>
@@ -12,6 +12,10 @@ body{
     padding: 0;
     margin: 0;
     font-size: 14px;
+}
+a{
+    text-decoration:none;
+    color: #fff;
 }
 .fund-container{
     width: 100%;
@@ -49,6 +53,14 @@ body{
     text-align: center;
     font-weight: bold;
     color: #fff;
+    z-index: 99999;
+}
+.title .tab{
+    font-size: 18px;
+    font-weight: 10;
+    font-family: 'Arial';
+    margin: 0 10%;
+    cursor: pointer;
 }
 .sub-title{
     font-size: 26px;
@@ -127,7 +139,8 @@ body{
     margin-top: 20px;
 }
 .btn-box .btn{
-    width: 60px;
+    width: auto;
+    padding: 0 16px;
     height: 28px;
     line-height: 26px;
     border-radius: 4px;
@@ -155,7 +168,11 @@ body{
 <body>
     <div class="fund-container">
         <div class="title">
-            朱陈基金
+            <div class="main-title">
+                <a href="http://1.15.87.105:12500/fund/fund-login.html" class="tab">登录</a>  
+                <span>朱陈基金 </span>
+                <a href="http://1.15.87.105:12500/fund/fund-list.html" class="tab">日志</a>
+            </div>
             <div class="sub-title">FUND OPERATION GUIDE</div>
         </div>
 
@@ -239,7 +256,8 @@ body{
                     </div>
                 </div>
                 <div class="btn-box">
-                    <button class="btn" onclick="onSearch()">查询</button>
+                    <button class="btn" onclick="onSearch('start')">开始持续计算</button>
+                    <button class="btn" onclick="onSearch('search')">查询</button>
                     <button class="btn clear" onclick="onClear()">清除</button>
                 </div>
             </div>
@@ -260,7 +278,7 @@ body{
                 document.getElementById(id).value = val;
             }
             
-            function onSearch() {
+            function onSearch(type) {
                 const inputs = ['code', 'time', 'pinglv', 'investMoney', 'asset', 'netValue', 'earnRatio', 'lineDay', 'zhenfuDay', 'type'];
                 let requestValue = [];
                 for (let i = 0; i < inputs.length; i++) {
@@ -269,13 +287,19 @@ body{
                 }
                 console.log(requestValue.join('$'))
     
-                let urlData = 'http://1.15.87.105:12500/fund/invest' + "?data=" + requestValue.join('$')
+                let urlData = '';
+                if (type === 'search') {
+                    urlData = 'http://1.15.87.105:12500/fund/cal' + "?data=" + requestValue.join('$')
+                } else if (type === 'start') {
+                    urlData = 'http://1.15.87.105:12500/fund/start' + "?data=" + requestValue.join('$')
+                }
+                
                 let xhr = new XMLHttpRequest();
                 xhr.open('GET', urlData, true);
                 xhr.setRequestHeader("Access-Control-Allow-Origin", "*");
                 xhr.send();
                 xhr.onreadystatechange = function() {
-                    if(xhr.readyState === 4 && xhr.status ===200){
+                    if(xhr.readyState === 4 && xhr.status ===200 && type === 'search'){
                         console.log(xhr.responseText);
                         const data = JSON.parse(xhr.responseText);
                         const res = ['all', 'rate', 'price', 'mean', 'wave', 'lastYield'];

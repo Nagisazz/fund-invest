@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>列表</title>
+    <script src="http://1.15.87.105:11000/file/echarts.min%20%281%29.js"></script>
+</head>
+
+<style>
+body{
+    padding: 0;
+    margin: 0;
+    font-size: 14px;
+}
+a{
+    text-decoration:none;
+    color: #fff;
+}
+.fund-container{
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    padding: 14px;
+    box-sizing: border-box;
+    background-color: #4281FF;
+    display: flex;
+    flex-direction: column;
+}
+.fund-container::after {
+  position: absolute;
+  top: 0;
+  left: 0;
+  content: '';
+  width: 100%;
+  height: 100%;
+  background-image: linear-gradient(
+      90deg,
+      #fff 0px,
+      #fff 1px,
+      transparent 1px,
+      transparent 100px
+    );
+  background-size: 80px;
+  opacity: 0.1;
+}
+.title{
+    font-size: 36px;
+    width: 100%;
+    text-align: center;
+    font-weight: bold;
+    color: #fff;
+    z-index: 9999;
+}
+.title .tab{
+    font-size: 18px;
+    font-weight: 10;
+    font-family: 'Arial';
+    margin: 0 10%;
+    cursor: pointer;
+}
+.sub-title{
+    font-size: 26px;
+    font-family: 'Arial';
+    font-weight: 10;
+    margin-top: 10px;
+}
+
+.list-info{
+    width: 70%;
+    z-index: 9999;
+    padding: 15px;
+    box-sizing: border-box;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.2);
+    margin: 20px auto 0;
+    color: #333;
+}
+.list-info .tr-table{
+    height: calc(100vh - 220px);
+    overflow-y: auto;
+}
+.tr-table::-webkit-scrollbar {
+      width: 5px;    
+}
+.tr-table::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
+    border-radius: 10px;
+    background-color: #ccc;
+}
+.list-info .th, .list-info .tr{
+    width: 100%;
+    display: flex;
+    border-top: 1px solid #e8e8e8;
+    border-bottom: 1px solid #e8e8e8;
+    background-color: #fafafa;
+    line-height: 36px;
+    line-height: 36px;
+}
+.list-info .th .td, .list-info .tr .td{
+    flex: 1;
+    text-align: center;
+}
+.list-info .th .operation, .list-info .tr .operation{
+    flex: 0 0 240px;
+}
+.list-info .tr{
+    border-top: none;
+    background-color: transparent;
+    cursor: pointer;
+}
+.list-info .tr:hover{
+    background-color: #fafafa;
+}
+.list-info .tr .operation{
+    color: #3a57b6;
+    display: flex;
+    justify-content: flex-start;
+}
+.list-info .tr .operation div{
+    margin: 0 10px;
+}
+
+.modal{
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    background-color: rgba(0, 0, 0, 0.5);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 99999;
+    display: none;
+}
+.modal-content{
+    width: 60%;
+    height: 70vh;
+    margin-left: 20%;
+    margin-top: 15vh;
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    box-sizing: border-box;
+}
+.modal-title{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    font-size: 16px;
+}
+.modal-title span:nth-child(2){
+    cursor: pointer;
+}
+.modal-container{
+    height: calc(100% - 20px);
+    overflow-y: auto;
+}
+.more-info{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-start;
+}
+.info-item{
+    width: 50%;
+    line-height: 240%;
+    color: #666;
+}
+.info-name{
+    display: inline-block;
+    width: 120px;
+    text-align: right;
+    color: #000;
+}
+.no-data{
+    width: 100%;
+    text-align: center;
+    margin-top: 100px;
+}
+</style>
+
+<body>
+    <div class="fund-container">
+        <div class="title">
+            <div class="main-title">
+                <a href="http://1.15.87.105:12500/fund/fund-login.html" class="tab">登录</a>  
+                <span>朱陈基金 </span>
+                <a href="http://1.15.87.105:12500/fund/fund-search.html" class="tab">查询</a>
+            </div>
+            <div class="sub-title">FUND OPERATION GUIDE</div>
+        </div>
+
+        <div class="list-info">
+            <div class="th">
+                <span class="td">基金编号</span>
+                <span class="td">账户资产</span>
+                <span class="td">收益率</span>
+                <span class="td">总收益</span>
+                <span class="td">开始时间</span>
+                <span class="td operation">操作</span>
+            </div>
+            <div class="tr-table" id="tr-table">
+
+            </div>
+        </div>
+
+        <div class="modal" id="modal">
+            <div class="modal-content" id="modalContainer">
+                <div class="modal-title">
+                    <span id="modalTitle">详情</span>
+                    <span onclick="closeModal()">X</span>
+                </div>
+                <div class="modal-container" id="modalContent">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // const detail = [
+        //     {
+        //         fundId: 'www',
+        //         balance: '30000', // 账户资产
+        //         worth: '1.04211', // 净值
+        //         yields: '12%', // 收益率
+        //         profileAmount: '2013', // 总收益
+        //         buyAmount: '37000', // 总买入金额
+        //         saleAmount: '7000', // 总卖出金额
+        //         investAmount: '30000', // 总投资金额
+        //         investType: '1', // 类型
+        //         price: '1500', // 定投金额
+        //         rate: '5%', // 定投比率
+        //         meanAmount: '34', // 均线金额
+        //         waveAmount: '8%', // 振幅比率
+        //         createTime: '220220914', // 开始时间
+        //         updateTime: '20220916', // 更新时间
+        //     }
+        // ];
+        // const list = [
+        //         { 
+        //             id: 1,
+        //             name: '名称',
+        //             code: 'www',
+        //             balance: '30000', // 账户资产
+        //             worth: '1.04211', // 净值
+        //             yields: '12%', // 收益率
+        //             profileAmount: '2013', // 总收益
+        //             buyAmount: '37000', // 总买入金额
+        //             saleAmount: '7000', // 总卖出金额
+        //             investAmount: '30000', // 总投资金额
+        //             investNum: '', // 定投次数
+        //             frequence: '2', // 定投频率
+        //             investMoney: '', // 定投基准金额
+        //             mean: '1500', // 定投金额
+        //             wave: '5%', // 定投比率
+        //             type: 1, // 策略类型
+        //             valid: 0, // 是否有效 1是0否
+        //             createTime: '220220914', // 开始时间
+        //             updateTime: '20220916', // 更新时间
+        //             lastInvestTime: '20220915', // 上次定投日期
+        //         },
+        //         {
+        //             id: 2,
+        //             name: '名称2',
+        //             code: 'www',
+        //             balance: '30000', // 账户资产
+        //             worth: '1.04211', // 净值
+        //             yields: '12%', // 收益率
+        //             profileAmount: '2013', // 总收益
+        //             buyAmount: '37000', // 总买入金额
+        //             saleAmount: '7000', // 总卖出金额
+        //             investAmount: '30000', // 总投资金额
+        //             investNum: '', // 定投次数
+        //             frequence: '2', // 定投频率
+        //             investMoney: '', // 定投基准金额
+        //             mean: '1500', // 定投金额
+        //             wave: '5%', // 定投比率
+        //             type: 1, // 策略类型
+        //             valid: 1, // 是否有效 1是0否
+        //             createTime: '220220914', // 开始时间
+        //             updateTime: '20220916', // 更新时间
+        //             lastInvestTime: '20220915', // 上次定投日期
+        //         }
+        //     ];
+        window.onload = function() {
+            
+            const list = [];
+            let urlData = 'http://1.15.87.105:12500/fund/list';
+            let xhr = new XMLHttpRequest();
+            xhr.open('GET', urlData, true);
+            xhr.setRequestHeader("Access-Control-Allow-Origin", "*");
+            xhr.send();
+            xhr.onreadystatechange = function() {
+                if(xhr.readyState === 4 && xhr.status ===200){
+                    list = xhr.responseText;
+                    let str = '';
+                    if (list &&list.length > 0) {
+                        for (let i = 0; i < list.length; i++) {
+                            str = str + '<div class="tr">' +
+                                '<span class="td">' + list[i].name + '</span>' +
+                                '<span class="td">' + list[i].balance + '</span>' +
+                                '<span class="td">' + list[i].yields + '</span>' +
+                                '<span class="td">' + list[i].profileAmount + '</span>' +
+                                '<span class="td">' + list[i].createTime + '</span>' +
+                                '<div class="td operation">' +
+                                '<div onclick="showMore(' + list[i].id + ')">显示更多</div>' +
+                                '<div onclick="onStop(' + list[i].id + ')">停止执行</div>' +
+                                '<div onclick="toDetail(' + list[i].id + ')">查看详情</div>' +
+                                '</div>' +
+                            '</div>'
+                        }
+                    } else {
+                        str = '<div class="no-data">暂无数据！</div>';
+                    }
+                    document.getElementById('tr-table').innerHTML = str;
+                }
+            }
+            xhr.onerror = function (error) {
+                str = '<div class="no-data">暂无数据！</div>';
+                document.getElementById('tr-table').innerHTML = str;
+                console.log(error)
+            }
+
+            // let str = '';
+            // for (let i = 0; i < list.length; i++) {
+            //     str = str + '<div class="tr">' +
+            //         '<span class="td">' + list[i].name + '</span>' +
+            //         '<span class="td">' + list[i].balance + '</span>' +
+            //         '<span class="td">' + list[i].yields + '</span>' +
+            //         '<span class="td">' + list[i].profileAmount + '</span>' +
+            //         '<span class="td">' + list[i].createTime + '</span>' +
+            //         '<div class="td operation">' +
+            //             '<div onclick="showMore(' + list[i].id + ')">查看详情</div>' +
+            //             '<div onclick="toDetail(' + list[i].id + ')">显示更多</div>' +
+            //             ( list[i].valid === 1 ? '<div onclick="onStop(' + list[i].id + ')">停止执行</div>' : '' ) +
+            //         '</div>' +
+            //     '</div>'
+            // }
+            // document.getElementById('tr-table').innerHTML = str;
+        }
+
+        
+
+        // test
+        // let enqueued = true;
+        // function expensiveOperation() {
+        //     console.log('打印', Date.now());
+        // }
+
+        // window.addEventListener('scroll', () => {
+        //     if(enqueued) {
+        //         enqueued = false;
+        //         window.requestAnimationFrame(expensiveOperation);
+        //         window.setTimeout(() => {enqueued = true}, 50)
+        //     }
+        // }, true)
+
+
+        function showMore(id) {
+            const info = list.filter((obj) => {
+                return obj.id === id;
+            })[0]
+            document.getElementById('modalTitle').innerText = '详情';
+            const ele = document.getElementById('modal');
+            ele.style.display = 'block';
+            const content = document.getElementById('modalContent');
+            const modalContainer = document.getElementById('modalContainer')
+            modalContainer.style.width = '60%';
+            modalContainer.style.marginLeft = '20%';
+            content.innerHTML = '<div class="more-info">' +
+                '<div class="info-item"><span class="info-name">基金名称：</span>' + info.name + '(' + info.code + ')' + '</div>' +
+                '<div class="info-item"><span class="info-name">账号资产：</span>' + info.balance + '</div>' +
+                '<div class="info-item"><span class="info-name">净值：</span>' + info.worth + '</div>' +
+                '<div class="info-item"><span class="info-name">收益率：</span>' + info.yields + '</div>' +
+                '<div class="info-item"><span class="info-name">总收益：</span>' + info.profileAmount + '</div>' +
+                '<div class="info-item"><span class="info-name">总买入金额：</span>' + info.buyAmount + '</div>' +
+                '<div class="info-item"><span class="info-name">总卖出金额：</span>' + info.saleAmount + '</div>' +
+                '<div class="info-item"><span class="info-name">总投资金额：</span>' + info.investAmount + '</div>' +
+                '<div class="info-item"><span class="info-name">定投次数：</span>' + info.investNum + '</div>' +
+                '<div class="info-item"><span class="info-name">定投频率：</span>' + info.frequence + '</div>' +
+                '<div class="info-item"><span class="info-name">定投基准金额：</span>' + info.investMoney + '</div>' +
+                '<div class="info-item"><span class="info-name">参考均线天数：</span>' + info.mean + '</div>' +
+                '<div class="info-item"><span class="info-name">参考振幅天数：</span>' + info.wave + '</div>' +
+                '<div class="info-item"><span class="info-name">策略类型：</span>' + (info.type === 1 ? "按照定投金额卖" : info.type === 2 ? "按照总资产卖" : "简单定投") + '</div>' +
+                '<div class="info-item"><span class="info-name">创建时间：</span>' + info.createTime + '</div>' +
+                '<div class="info-item"><span class="info-name">更新时间：</span>' + info.updateTime + '</div>' +
+                '<div class="info-item"><span class="info-name">上次定投日期：</span>' + info.lastInvestTime + '</div>' +
+            '</div>'
+        }
+
+        function onStop(id) {
+            let urlData = 'http://1.15.87.105:12500/fund/stop' + "?fundId=" + id
+            let xhr = new XMLHttpRequest();
+            xhr.open('GET', urlData, true);
+            xhr.setRequestHeader("Access-Control-Allow-Origin", "*");
+            xhr.send();
+            xhr.onreadystatechange = function() {
+                if(xhr.readyState === 4 && xhr.status ===200){
+                    console.log('改定投停止执行');
+                }
+            }
+            xhr.onerror = function (error) {
+                console.log(error)
+            }
+        }
+
+        function toDetail(id) {
+            document.getElementById('modalTitle').innerText = '更多信息';
+            const ele = document.getElementById('modal');
+            ele.style.display = 'block';
+            const modalContainer = document.getElementById('modalContainer')
+            modalContainer.style.width = '80%';
+            modalContainer.style.marginLeft = '10%';
+
+            let urlData = 'http://1.15.87.105:12500/fund/info' + "?fundId=" + id
+            let xhr = new XMLHttpRequest();
+            xhr.open('GET', urlData, true);
+            xhr.setRequestHeader("Access-Control-Allow-Origin", "*");
+            xhr.send();
+            xhr.onreadystatechange = function() {
+                if(xhr.readyState === 4 && xhr.status === 200){
+                    const data = JSON.parse(xhr.responseText);
+                    const x = [];
+                    const worth = [];
+                    const balance = [];
+                    const investAmount = [];
+                    if (data && data.length > 0) {
+                        data.map((obj) => {
+                            x.push(this.tranformTime(obj.createTime));
+                            worth.push(obj.worth);
+                            balance.push(obj.balance);
+                            investAmount.push(obj.investAmount);
+                        })
+                        this.setEcharts(x, worth, balance, investAmount);
+                    } else {
+                        document.getElementById('modalContent').innerHTML = '<div class="no-data">暂无数据！</div>';
+                    }
+                }
+            }
+            xhr.onerror = function (error) {
+                document.getElementById('modalContent').innerHTML = '<div class="no-data">暂无数据！</div>';
+            }
+        }
+
+        function setEcharts(x, worth, balance, investAmount) {
+            var myChart = echarts.init(document.getElementById('modalContent'));
+            var option;
+            option = {
+                grid: {
+                    bottom: 80,
+                    top: 30
+                },
+                toolbox: {
+                    feature: {
+                    dataZoom: {
+                        yAxisIndex: 'none'
+                    },
+                    restore: {},
+                    saveAsImage: {}
+                    }
+                },
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                    type: 'cross',
+                    animation: false,
+                    label: {
+                        backgroundColor: '#505765'
+                    }
+                    }
+                },
+                legend: {
+                    data: ['净值', '账户资产', '投资金额'],
+                },
+                dataZoom: [
+                    {
+                        show: true,
+                        realtime: true,
+                        start: 50,
+                        end: 100
+                    },
+                    {
+                        type: 'inside',
+                        realtime: true,
+                        start: 50,
+                        end: 100
+                    }
+                ],
+                xAxis: [
+                    {
+                        type: 'category',
+                        boundaryGap: false,
+                        axisLine: { onZero: false },
+                        data: x || ['2009/6/03', '2009/6/05', '2009/6/08', '2009/6/10', '2009/6/12', '2009/6/16']
+                    }
+                ],
+                yAxis: [
+                    {
+                        name: '净值（元）',
+                        type: 'value',
+                        axisLine: {
+                            show: true
+                        },
+                        axisTick: {
+                            show: true
+                        },
+                        splitLine: {
+                            show: false
+                        }
+                    },
+                    {
+                        name: '账户资产/投资金额（元）',
+                        type: 'value',
+                        axisLine: {
+                            show: true
+                        },
+                        axisTick: {
+                            show: true
+                        },
+                        splitLine: {
+                            show: false
+                        }
+                    }
+                ],
+                series: [
+                    {
+                        name: '净值',
+                        type: 'line',
+                        lineStyle: {
+                            width: 2
+                        },
+                        data: worth || [1.03, 1.11, 1.23, 1.06, 1.33, 1.18, 1.20]
+                    },
+                    {
+                        name: '账户资产',
+                        type: 'line',
+                        yAxisIndex: 1,
+                        lineStyle: {
+                            width: 2
+                        },
+                        data: balance || [150, 230, 224, 218, 135, 147, 260]
+                    },
+                    {
+                        name: '投资金额',
+                        type: 'line',
+                        yAxisIndex: 1,
+                        lineStyle: {
+                            width: 2
+                        },
+                        data: investAmount || [1500, 1100, 900, 700, 550, 900, 880]
+                    }
+                ]
+            };
+            myChart.setOption(option);
+        }
+
+        function closeModal() {
+            const ele = document.getElementById('modal');
+            ele.style.display = 'none';
+        }
+
+        function tranformTime(item_date) {
+            let date = new Date(parseInt(item_date) * 1000);
+            let YY = date.getFullYear() + "-";
+            let MM =
+                (date.getMonth() + 1 < 10
+                ? "0" + (date.getMonth() + 1)
+                : date.getMonth() + 1) + "-";
+            let DD = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
+            let hh =
+                (date.getHours() < 10 ? "0" + date.getHours() : date.getHours()) + ":";
+            let mm =
+                (date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes()) +
+                ":";
+            let ss =
+                date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds();
+            return MM + DD + " " + hh + mm;
+        }
+
+    </script>
+</body>
+</html>

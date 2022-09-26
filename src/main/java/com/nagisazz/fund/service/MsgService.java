@@ -26,9 +26,8 @@ public class MsgService {
     @Autowired
     private RestTemplate restTemplate;
 
-    public void send(String title, String content) {
+    public void sendMsg(String title, String content) {
         String sendMsgUrl = MessageFormat.format(url, token, title, content, groupId);
-        String res = restTemplate.getForObject(sendMsgUrl, String.class);
-        // todo 消息处理结果
+        restTemplate.getForObject(sendMsgUrl, String.class);
     }
 }
