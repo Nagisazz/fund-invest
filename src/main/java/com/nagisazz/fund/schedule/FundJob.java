@@ -84,4 +84,12 @@ public class FundJob {
         }
         log.info("结束执行【invest】任务，jobParam：{}", jobParam);
     }
+
+    @XxlJob("test")
+    public void test() {
+        final String jobParam = XxlJobHelper.getJobParam();
+        log.info("开始执行【test】任务，jobParam：{}", jobParam);
+        XxlJobHelper.handleSuccess("success");
+        log.info("结束执行【test】任务，jobParam：{}", jobParam);
+    }
 }

@@ -159,6 +159,7 @@ public class FundCalService {
     }
 
     private String callPython(String[] param) {
+        log.info("调用python参数：{}", param);
         Process proc;
         StringBuilder res = new StringBuilder();
         StringBuilder resErr = new StringBuilder();
@@ -180,8 +181,8 @@ public class FundCalService {
         } catch (Exception e) {
             log.error("调用python失败", e);
         }
-        log.info("invest返回结果：{}", res);
-        log.info("invest失败结果：{}", resErr);
+        log.info("调用python返回结果：{}", res);
+        log.info("调用python失败结果：{}", resErr);
         return String.valueOf(res);
     }
 }

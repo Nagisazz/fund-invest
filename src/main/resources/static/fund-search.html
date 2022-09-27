@@ -71,14 +71,34 @@ a{
 .fund-info{
     width: 70%;
     z-index: 9999;
-    height: 290px;
-    padding: 30px 15px 15px 15px;
+    height: 300px;
+    padding: 15px;
     box-sizing: border-box;
     background-color: #fff;
     border-radius: 10px;
     box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.2);
-    display: flex;
     margin: 20px auto 0;
+}
+.fund-fields{
+    display: flex;
+}
+.fund-tabs{
+    width: 100%;
+    height: 30px;
+    line-height: 30px;
+    border-bottom: 1px solid #d9d9d9;
+    display: inline-block;
+    margin-bottom: 10px;
+}
+.fund-tabs .fund-tab{
+    width: 40px;
+    text-align: center;
+    border: 1px solid #d9d9d9;
+    border-bottom: none;
+    display: inline-block;
+    cursor: pointer;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
 }
 .left, .right{
     width: 50%;
@@ -136,7 +156,9 @@ a{
 .btn-box{
     text-align: right;
     padding-right: 6%;
-    margin-top: 20px;
+    margin-top: 10px;
+    display: flex;
+    justify-content: flex-end;
 }
 .btn-box .btn{
     width: auto;
@@ -154,6 +176,7 @@ a{
     border: 1px solid #d9d9d9;
     color: #333;
     background-color: transparent;
+    margin-left: 20px;
 }
 .fund-res{
     height: 190px;
@@ -177,95 +200,99 @@ a{
         </div>
 
         <div class="fund-info">
-            <div class="left">
-                <div class="input-txt" >
-                    <span class="input-name">基金编号：</span>
-                    <div class="input-box">
-                        <input type="text" value="161725" id="code" oninput="updateValue('code')">
-                        <div class="del-icon" onclick="onSingleClear('code')"> <span class="icon">X</span> </div>
-                    </div>
-                </div>
-                <div class="input-txt">
-                    <span class="input-name">定投频率：</span>
-                    <div class="input-box">
-                        <input type="text" value="7" id="pinglv" oninput="updateValue('pinglv')">
-                        <div class="del-icon" onclick="onSingleClear('pinglv')"> <span class="icon">X</span> </div>
-                    </div>
-                </div>
-                
-                <div class="input-txt">
-                    <span class="input-name">账户资产：</span>
-                    <div class="input-box">
-                        <input type="text" value="7813" id="asset" oninput="updateValue('asset')">
-                        <div class="del-icon" onclick="onSingleClear('asset')"> <span class="icon">X</span> </div>
-                    </div>
-                </div>
-                <div class="input-txt">
-                    <span class="input-name">净值：</span>
-                    <div class="input-box">
-                        <input type="text" value="0.9738" id="netValue" oninput="updateValue('netValue')">
-                        <div class="del-icon" onclick="onSingleClear('netValue')"> <span class="icon">X</span> </div>
-                    </div>
-                </div>
-                <div class="input-txt">
-                    <span class="input-name">参考振幅天数：</span>
-                    <div class="input-box">
-                        <input type="text" value="5" id="zhenfuDay" oninput="updateValue('zhenfuDay')">
-                        <div class="del-icon" onclick="onSingleClear('zhenfuDay')"> <span class="icon">X</span> </div>
-                    </div>
-                </div>
-                <div class="input-txt">
-                    <span class="input-name">持有收益：</span>
-                    <div class="input-box">
-                        <input type="text" value="250" id="ownAssets" oninput="updateValue('ownAssets')">
-                        <div class="del-icon" onclick="onSingleClear('ownAssets')"> <span class="icon">X</span> </div>
-                    </div>
-                </div>
+            <div class="fund-tabs">
+                <div class="fund-tab" id="tab1" onclick="onTab('tab1')">单次</div>
+                <div class="fund-tab" id="tab2" onclick="onTab('tab2')">持续</div>
             </div>
-            <div class="right">
-                <div class="input-txt">
-                    <span class="input-name">时间：</span>
-                    <div class="input-box">
-                        <input type="text" value="20220901" id="time" oninput="updateValue('time')">
-                        <div class="del-icon" onclick="onSingleClear('time')"> <span class="icon">X</span> </div>
+            <div class="fund-fields">
+                <div class="left">
+                    <div class="input-txt" >
+                        <span class="input-name">基金编号：</span>
+                        <div class="input-box">
+                            <input type="text" value="161725" id="code" oninput="updateValue('code')">
+                            <div class="del-icon" onclick="onSingleClear('code')"> <span class="icon">X</span> </div>
+                        </div>
+                    </div>
+                    <div class="input-txt">
+                        <span class="input-name">定投频率：</span>
+                        <div class="input-box">
+                            <input type="text" value="7" id="pinglv" oninput="updateValue('pinglv')">
+                            <div class="del-icon" onclick="onSingleClear('pinglv')"> <span class="icon">X</span> </div>
+                        </div>
+                    </div>
+                    
+                    <div class="input-txt">
+                        <span class="input-name">账户资产：</span>
+                        <div class="input-box">
+                            <input type="text" value="7813" id="asset" oninput="updateValue('asset')">
+                            <div class="del-icon" onclick="onSingleClear('asset')"> <span class="icon">X</span> </div>
+                        </div>
+                    </div>
+                    <div class="input-txt">
+                        <span class="input-name">净值：</span>
+                        <div class="input-box">
+                            <input type="text" value="0.9738" id="netValue" oninput="updateValue('netValue')">
+                            <div class="del-icon" onclick="onSingleClear('netValue')"> <span class="icon">X</span> </div>
+                        </div>
+                    </div>
+                    <div class="input-txt">
+                        <span class="input-name">参考振幅天数：</span>
+                        <div class="input-box">
+                            <input type="text" value="5" id="zhenfuDay" oninput="updateValue('zhenfuDay')">
+                            <div class="del-icon" onclick="onSingleClear('zhenfuDay')"> <span class="icon">X</span> </div>
+                        </div>
                     </div>
                 </div>
-                <div class="input-txt">
-                    <span class="input-name">每次定投金额：</span>
-                    <div class="input-box">
-                        <input type="text" value="3000" id="investMoney" oninput="updateValue('investMoney')">
-                        <div class="del-icon" onclick="onSingleClear('investMoney')"> <span class="icon">X</span> </div>
+                <div class="right">
+                    <div class="input-txt">
+                        <span class="input-name" id="changeName">时间：</span>
+                        <div class="input-box" id="time">
+                            <input type="text" value="20220901" id="time" oninput="updateValue('time')">
+                            <div class="del-icon" onclick="onSingleClear('time')"> <span class="icon">X</span> </div>
+                        </div>
+                        <div class="input-box" id="ownAssets">
+                            <input type="text" value="10000" id="ownAssets" oninput="updateValue('ownAssets')">
+                            <div class="del-icon" onclick="onSingleClear('ownAssets')"> <span class="icon">X</span> </div>
+                        </div>
                     </div>
-                </div>
 
-                <div class="input-txt">
-                    <span class="input-name">收益率：</span>
-                    <div class="input-box">
-                        <input type="text" value="0.053" id="earnRatio" oninput="updateValue('earnRatio')">
-                        <div class="del-icon" onclick="onSingleClear('earnRatio')"> <span class="icon">X</span> </div>
+                    <div class="input-txt">
+                        <span class="input-name">每次定投金额：</span>
+                        <div class="input-box">
+                            <input type="text" value="3000" id="investMoney" oninput="updateValue('investMoney')">
+                            <div class="del-icon" onclick="onSingleClear('investMoney')"> <span class="icon">X</span> </div>
+                        </div>
                     </div>
-                </div>
-                <div class="input-txt">
-                    <span class="input-name">参考均线天数：</span>
-                    <div class="input-box">
-                        <input type="text" value="250" id="lineDay" oninput="updateValue('lineDay')">
-                        <div class="del-icon" onclick="onSingleClear('lineDay')"> <span class="icon">X</span> </div>
+    
+                    <div class="input-txt">
+                        <span class="input-name">收益率：</span>
+                        <div class="input-box">
+                            <input type="text" value="0.053" id="earnRatio" oninput="updateValue('earnRatio')">
+                            <div class="del-icon" onclick="onSingleClear('earnRatio')"> <span class="icon">X</span> </div>
+                        </div>
                     </div>
-                </div>
-                <div class="input-txt">
-                    <span class="input-name">策略类型：</span>
-                    <div class="input-box">
-                        <select id="type" onchange="updateValue('type')">
-                            <option value="1">按照定投金额卖</option>
-                            <option value="2" selected>按照总资产卖</option>
-                            <option value="3">简单的定投</option>
-                        </select>
+                    <div class="input-txt">
+                        <span class="input-name">参考均线天数：</span>
+                        <div class="input-box">
+                            <input type="text" value="250" id="lineDay" oninput="updateValue('lineDay')">
+                            <div class="del-icon" onclick="onSingleClear('lineDay')"> <span class="icon">X</span> </div>
+                        </div>
                     </div>
-                </div>
-                <div class="btn-box">
-                    <button class="btn" onclick="onSearch('start')">开始持续计算</button>
-                    <button class="btn" onclick="onSearch('search')">查询</button>
-                    <button class="btn clear" onclick="onClear()">清除</button>
+                    <div class="input-txt">
+                        <span class="input-name">策略类型：</span>
+                        <div class="input-box">
+                            <select id="type" onchange="updateValue('type')">
+                                <option value="1">按照定投金额卖</option>
+                                <option value="2" selected>按照总资产卖</option>
+                                <option value="3">简单的定投</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="btn-box">
+                        <button class="btn" id="instance" onclick="onSearch('start')">开始持续计算</button>
+                        <button class="btn" id="once" onclick="onSearch('search')">查询</button>
+                        <button class="btn clear" onclick="onClear()">清除</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -280,6 +307,50 @@ a{
     </div>
 
     <script >
+            window.onload = function() {
+                this.init();
+            }
+
+            function init() {
+                document.getElementById('once').style.display = 'block';
+                document.getElementById('instance').style.display = 'none';
+                const tab1 = document.getElementById('tab1');
+                tab1.style.backgroundColor = '#3a57b6';
+                tab1.style.borderColor = '#3a57b6';
+                tab1.style.color = '#ffffff';
+                const tab2 = document.getElementById('tab2');
+                tab2.style.backgroundColor = 'transparent';
+                tab2.style.borderColor = '#d9d9d9';
+                tab2.style.color = '#000000';
+                document.getElementById('ownAssets').style.display = 'none';
+                document.getElementById('time').style.display = 'block';
+                document.getElementById('changeName').innerHTML = '时间：';
+                document.getElementById('time').value = '20220901';
+                document.getElementById('ownAssets').value = '';
+            }
+
+            function onTab(type) {
+                if (type === 'tab2') {
+                    document.getElementById('instance').style.display = 'block';
+                    document.getElementById('once').style.display = 'none';
+                    const tab2 = document.getElementById('tab2');
+                    tab2.style.backgroundColor = '#3a57b6';
+                    tab2.style.borderColor = '#3a57b6';
+                    tab2.style.color = '#ffffff';
+                    const tab1 = document.getElementById('tab1');
+                    tab1.style.backgroundColor = 'transparent';
+                    tab1.style.borderColor = '#d9d9d9';
+                    tab1.style.color = '#000000';
+                    document.getElementById('ownAssets').style.display = 'block';
+                    document.getElementById('time').style.display = 'none';
+                    document.getElementById('changeName').innerHTML = '持有收益：';
+                    document.getElementById('time').value = '';
+                    document.getElementById('ownAssets').value = '10000';
+                } else {
+                    this.init();
+                }
+            }
+
             function updateValue(id) {
                 const val = document.getElementById(id).value;
                 document.getElementById(id).value = val;
