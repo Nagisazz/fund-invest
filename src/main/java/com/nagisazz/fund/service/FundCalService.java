@@ -17,6 +17,9 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -159,7 +162,7 @@ public class FundCalService {
     }
 
     private String callPython(String[] param) {
-        log.info("调用python参数：{}", param);
+        log.info("调用python参数：{}", Arrays.stream(param).toArray());
         Process proc;
         StringBuilder res = new StringBuilder();
         StringBuilder resErr = new StringBuilder();

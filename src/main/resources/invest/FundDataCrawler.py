@@ -4,7 +4,7 @@ import execjs
 import pandas as pd
 import re
 
-folderCode = 'data/'
+folderCode = '/nagisa/invest/data/'
 
 class FundDataCrawler:
     def getUrl(self, fundCode):
