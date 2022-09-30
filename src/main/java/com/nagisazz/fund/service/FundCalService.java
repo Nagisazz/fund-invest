@@ -1,5 +1,6 @@
 package com.nagisazz.fund.service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.nagisazz.fund.common.result.OperationResult;
 import com.nagisazz.fund.dao.FundInfoExtendMapper;
 import com.nagisazz.fund.dao.base.InvestLogMapper;
@@ -162,7 +163,7 @@ public class FundCalService {
     }
 
     private String callPython(String[] param) {
-        log.info("调用python参数：{}", Arrays.stream(param).toArray());
+        log.info("调用python参数：{}", JSONObject.toJSONString(param));
         Process proc;
         StringBuilder res = new StringBuilder();
         StringBuilder resErr = new StringBuilder();
