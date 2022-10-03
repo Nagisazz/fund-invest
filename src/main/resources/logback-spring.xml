@@ -27,6 +27,7 @@
     <!--</appender>-->
     <!-- 按照每天生成日志文件,定义默认日志文件 -->   
     <appender name="File" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${LOG_HOME}/stdout.log</File>
     	 <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
     	 	<FileNamePattern>${LOG_HOME}/system.%d{yyyy-MM-dd}.%i.log</FileNamePattern> 
             <!--日志文件保留天数-->
