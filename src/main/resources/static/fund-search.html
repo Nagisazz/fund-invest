@@ -250,7 +250,7 @@ a{
                             <input type="text" value="20220901" id="time" oninput="updateValue('time')">
                             <div class="del-icon" onclick="onSingleClear('time')"> <span class="icon">X</span> </div>
                         </div>
-                        <div class="input-box" id="ownAssets">
+                        <div class="input-box" id="ownAssetsInput">
                             <input type="text" value="10000" id="ownAssets" oninput="updateValue('ownAssets')">
                             <div class="del-icon" onclick="onSingleClear('ownAssets')"> <span class="icon">X</span> </div>
                         </div>
@@ -322,7 +322,7 @@ a{
                 tab2.style.backgroundColor = 'transparent';
                 tab2.style.borderColor = '#d9d9d9';
                 tab2.style.color = '#000000';
-                document.getElementById('ownAssets').style.display = 'none';
+                document.getElementById('ownAssetsInput').style.display = 'none';
                 document.getElementById('time').style.display = 'block';
                 document.getElementById('changeName').innerHTML = '时间：';
                 document.getElementById('time').value = '20220901';
@@ -341,7 +341,7 @@ a{
                     tab1.style.backgroundColor = 'transparent';
                     tab1.style.borderColor = '#d9d9d9';
                     tab1.style.color = '#000000';
-                    document.getElementById('ownAssets').style.display = 'block';
+                    document.getElementById('ownAssetsInput').style.display = 'block';
                     document.getElementById('time').style.display = 'none';
                     document.getElementById('changeName').innerHTML = '持有收益：';
                     document.getElementById('time').value = '';

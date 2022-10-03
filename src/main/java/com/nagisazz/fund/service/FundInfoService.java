@@ -2,7 +2,9 @@ package com.nagisazz.fund.service;
 
 import com.alibaba.fastjson.JSON;
 import com.nagisazz.fund.vo.FundTodayInfo;
+
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -39,11 +41,12 @@ public class FundInfoService {
     }
 
     private FundTodayInfo getInfo(String fundCode) {
-        fundUrl = fundUrl.replace("{code}", fundCode) + System.currentTimeMillis();
+        String url = fundUrl.replace("{code}", fundCode) + System.currentTimeMillis();
         HttpHeaders httpHeaders = new HttpHeaders();
         HttpEntity<Object> httpEntity = new HttpEntity<>(null, httpHeaders);
-        byte[] bytes = restTemplate.exchange(fundUrl, HttpMethod.GET, httpEntity, String.class).getBody().getBytes(StandardCharsets.ISO_8859_1);
+        byte[] bytes = restTemplate.exchange(url, HttpMethod.GET, httpEntity, String.class).getBody().getBytes(StandardCharsets.ISO_8859_1);
         String res = new String(bytes, StandardCharsets.UTF_8);
+        log.info("调用接口：{},返回值：{}", url, res);
         return JSON.parseObject(res.substring(8, res.length() - 2), FundTodayInfo.class);
     }
 }
