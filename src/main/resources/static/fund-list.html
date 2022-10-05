@@ -155,7 +155,7 @@ a{
 }
 .modal-container{
     height: calc(100% - 20px);
-    overflow-y: auto;
+    overflow: hidden;
 }
 .more-info{
     display: flex;
@@ -213,6 +213,8 @@ a{
                     <span onclick="closeModal()">X</span>
                 </div>
                 <div class="modal-container" id="modalContent">
+                </div>
+                <div class="modal-container" id="modalContent2">
                 </div>
             </div>
         </div>
@@ -287,6 +289,7 @@ a{
         let list = [];
         window.onload = function() {
             this.getInitList();
+
 
             // let str = '';
             // for (let i = 0; i < list.length; i++) {
@@ -374,6 +377,9 @@ a{
             const ele = document.getElementById('modal');
             ele.style.display = 'block';
             const content = document.getElementById('modalContent');
+            const content2 = document.getElementById('modalContent2');
+            content.style.display = 'block';
+            content2.style.display = 'none';
             const modalContainer = document.getElementById('modalContainer')
             modalContainer.style.width = '60%';
             modalContainer.style.marginLeft = '20%';
@@ -417,12 +423,18 @@ a{
         }
 
         function toDetail(id) {
+            const content = document.getElementById('modalContent');
+            content.style.display = 'none';
+
             document.getElementById('modalTitle').innerText = '更多信息';
             const ele = document.getElementById('modal');
             ele.style.display = 'block';
             const modalContainer = document.getElementById('modalContainer')
             modalContainer.style.width = '80%';
             modalContainer.style.marginLeft = '10%';
+
+            const content2 = document.getElementById('modalContent2');
+            content2.style.display = 'block';
 
             let urlData = 'http://localhost:9200/fund/info' + "?fundId=" + id
             let xhr = new XMLHttpRequest();
@@ -437,7 +449,6 @@ a{
                     const worth = [];
                     const balance = [];
                     const investAmount = [];
-                    console.log(data);
                     if (data.data && data.data.length > 0) {
                         data.data.map((obj) => {
                             x.push(that.tranformTime(obj.createTime));
@@ -445,20 +456,20 @@ a{
                             balance.push(obj.balance);
                             investAmount.push(obj.investAmount);
                         })
-                        console.log(x, worth, balance, investAmount);
+                        // document.getElementById('modalContent').removeAttribute('_echarts_instance_');
                         that.setEcharts(x, worth, balance, investAmount);
                     } else {
-                        document.getElementById('modalContent').innerHTML = '<div class="no-data">暂无数据！</div>';
+                        document.getElementById('modalContent2').innerHTML = '<div class="no-data">暂无数据！</div>';
                     }
                 }
             }
             xhr.onerror = function (error) {
-                document.getElementById('modalContent').innerHTML = '<div class="no-data">暂无数据！</div>';
+                document.getElementById('modalContent2').innerHTML = '<div class="no-data">暂无数据！</div>';
             }
         }
 
         function setEcharts(x, worth, balance, investAmount) {
-            var myChart = echarts.init(document.getElementById('modalContent'));
+            var myChart = echarts.init(document.getElementById('modalContent2'));
             var option;
             option = {
                 grid: {
@@ -588,7 +599,7 @@ a{
                 (date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes());
             let ss =
                 date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds();
-            return MM + DD + " " + hh + mm;
+            return YY + MM + DD + " " + hh + mm;
         }
 
     </script>
