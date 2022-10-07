@@ -1,7 +1,6 @@
 package com.nagisazz.fund.service;
 
 import com.alibaba.fastjson.JSONObject;
-import com.nagisazz.fund.common.result.OperationResult;
 import com.nagisazz.fund.dao.FundInfoExtendMapper;
 import com.nagisazz.fund.dao.base.InvestLogMapper;
 import com.nagisazz.fund.entity.FundInfo;
@@ -18,9 +17,6 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 @Slf4j
 @Service
@@ -31,6 +27,9 @@ public class FundCalService {
 
     @Autowired
     private InvestLogMapper investLogMapper;
+
+    @Autowired
+    private MsgService msgService;
 
     /**
      * 普通交易日计算收益
@@ -142,6 +141,17 @@ public class FundCalService {
         investLog.setCreateTime(LocalDateTime.now());
         investLog.setUpdateTime(LocalDateTime.now());
         investLogMapper.insertSelective(investLog);
+
+        // 发送定投消息
+        // xx基金目前持有收益xx元，收益率xx，高于（低于）均线xx。建议今日买入（卖出）xx元
+        String wordMean = (Double.parseDouble(worth) / investLog.getMeanAmount() - 1) > 0 ? "高于" : "低于";
+        String wordInvest = investLog.getInvestType() == 3 ? "卖出" + investLog.getPrice() + "元" :
+                (investLog.getPrice() < 0 ? "卖出" + Math.abs(investLog.getPrice()) + "元" : "买入" + investLog.getPrice() + "元");
+        String content = fundInfo.getName() + "基金目前持有收益" + fundInfo.getProfileAmount() + "元，收益率" +
+                transPercent(fundInfo.getYields()) + "%，" + wordMean + "均线" +
+                Math.abs(transPercent(Double.parseDouble(worth) / investLog.getMeanAmount() - 1)) +
+                "%。建议今日" + wordInvest;
+        msgService.sendMsg("基金定投提醒", content);
     }
 
     public String crawler(String code) {
@@ -188,5 +198,9 @@ public class FundCalService {
         log.info("调用python返回结果：{}", res);
         log.info("调用python失败结果：{}", resErr);
         return String.valueOf(res);
+    }
+
+    private Double transPercent(Double num) {
+        return ((int) (num * 10000)) / 100.0;
     }
 }
