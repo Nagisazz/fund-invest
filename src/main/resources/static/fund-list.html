@@ -163,14 +163,43 @@ a{
     align-items: center;
     justify-content: flex-start;
 }
+.btns{
+    display: flex;
+}
+.edit-btn{
+    width: 50px;
+    padding: 0 16px;
+    height: 28px;
+    line-height: 26px;
+    border-radius: 4px;
+    background-color: #3a57b6;
+    border: 1px solid #3a57b6;
+    color: #fff;
+    text-align: center;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+.edit-btn img{
+    width: 14px;
+    height: 14px;
+    margin-right: 8px;
+}
+.save-btn{
+    margin-left: 20px;
+}
 .info-item{
     width: 50%;
     line-height: 240%;
     color: #666;
+    display: flex;
+}
+.info-item div{
+    flex: 1;
 }
 .info-name{
-    display: inline-block;
     width: 120px;
+    flex: 0 0 120px;
     text-align: right;
     color: #000;
 }
@@ -178,6 +207,23 @@ a{
     width: 100%;
     text-align: center;
     margin-top: 100px;
+}
+.input-box{
+    width: 70%;
+    height: 28px;
+    line-height: 26px;
+    border: 1px solid #d9d9d9;
+    border-radius: 4px;
+    position: relative;
+}
+.input-box input, .input-box select{
+    padding-left: 10px;
+    border: none;
+    outline: none;
+    width: 90%;
+}
+.input-box select{
+    width: 96%;
 }
 </style>
 
@@ -213,6 +259,108 @@ a{
                     <span onclick="closeModal()">X</span>
                 </div>
                 <div class="modal-container" id="modalContent">
+                    <div class="btns">
+                        <div class="edit-btn" onclick="onEdit()">
+                            <img src="http://1.15.87.105:11000/file/edit.png" alt="">
+                            编辑
+                        </div>
+                        <div class="edit-btn save-btn" onclick="onSave()">
+                            <img src="http://1.15.87.105:11000/file/save.png" alt="">
+                            保存
+                        </div>
+                    </div>
+                    <div class="more-info">
+                        <div class="info-item">
+                            <span class="info-name">基金名称：</span>
+                            <div id="name"></div>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-name">账号资产：</span>
+                            <div id="balance"></div>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-name">净值：</span>
+                            <div id="worth"></div>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-name">收益率：</span>
+                            <div id="yields"></div>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-name">总收益：</span>
+                            <div id="profileAmount"></div>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-name">总买入金额：</span>
+                            <div id="buyAmount"></div>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-name">总卖出金额：</span>
+                            <div id="saleAmount"></div>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-name">总投资金额：</span>
+                            <div id="investAmount"></div>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-name">定投次数：</span>
+                            <div id="investNum"></div>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-name">定投频率：</span>
+                            <div id="frequence"></div>
+                            <div id="frequenceEdit" class="input-box">
+                                <input type="text" value="" id="frequenceInput" oninput="updateValue('frequenceInput')">
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-name">定投基准金额：</span>
+                            <div id="investMoney"></div>
+                            <div id="investMoneyEdit" class="input-box">
+                                <input type="text" value="" id="investMoneyInput" oninput="updateValue('investMoneyInput')">
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-name">参考均线天数：</span>
+                            <div id="mean"></div>
+                            <div id="meanEdit" class="input-box">
+                                <input type="text" value="" id="meanInput" oninput="updateValue('meanInput')">
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-name">参考振幅天数：</span>
+                            <div id="wave"></div>
+                            <div id="waveEdit" class="input-box">
+                                <input type="text" value="" id="waveInput" oninput="updateValue('waveInput')">
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-name">策略类型：</span>
+                            <div id="type"></div>
+                            <div id="typeEdit" class="input-box">
+                                <select id="typeInput" onchange="updateValue('typeInput')">
+                                    <option value="1">按照定投金额卖</option>
+                                    <option value="2">按照总资产卖</option>
+                                    <option value="3">简单的定投</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-name">创建时间：</span>
+                            <div id="createTime"></div>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-name">更新时间：</span>
+                            <div id="updateTime"></div>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-name">上次定投日期：</span>
+                            <div id="lastInvestTime"></div>
+                            <div id="lastInvestTimeEdit" class="input-box">
+                                <input type="text" value="" id="lastInvestTimeInput" oninput="updateValue('lastInvestTimeInput')">
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-container" id="modalContent2">
                 </div>
@@ -223,6 +371,7 @@ a{
     <script>
         // const detail = [
         //     {
+        //         id: '1',
         //         fundId: 'www',
         //         balance: '30000', // 账户资产
         //         worth: '1.04211', // 净值
@@ -254,14 +403,14 @@ a{
         //             investAmount: '30000', // 总投资金额
         //             investNum: '', // 定投次数
         //             frequence: '2', // 定投频率
-        //             investMoney: '', // 定投基准金额
-        //             mean: '1500', // 定投金额
-        //             wave: '5%', // 定投比率
+        //             investMoney: '1000', // 定投基准金额
+        //             mean: '500', // 定投金额
+        //             wave: '5', // 定投比率
         //             type: 1, // 策略类型
         //             valid: 0, // 是否有效 1是0否
-        //             createTime: '220220914', // 开始时间
-        //             updateTime: '20220916', // 更新时间
-        //             lastInvestTime: '20220915', // 上次定投日期
+        //             createTime: '2020-01-13T16:00:00.000Z', // 开始时间
+        //             updateTime: '2020-01-13T16:00:00.000Z', // 更新时间
+        //             lastInvestTime: '2020-01-13T16:00:00.000Z', // 上次定投日期
         //         },
         //         {
         //             id: 2,
@@ -276,21 +425,20 @@ a{
         //             investAmount: '30000', // 总投资金额
         //             investNum: '', // 定投次数
         //             frequence: '2', // 定投频率
-        //             investMoney: '', // 定投基准金额
-        //             mean: '1500', // 定投金额
-        //             wave: '5%', // 定投比率
-        //             type: 1, // 策略类型
+        //             investMoney: '1090', // 定投基准金额
+        //             mean: '800', // 定投金额
+        //             wave: '8', // 定投比率
+        //             type: 2, // 策略类型
         //             valid: 1, // 是否有效 1是0否
-        //             createTime: '220220914', // 开始时间
-        //             updateTime: '20220916', // 更新时间
-        //             lastInvestTime: '20220915', // 上次定投日期
+        //             createTime: '2020-01-13T16:00:00.000Z', // 开始时间
+        //             updateTime: '2020-01-13T16:00:00.000Z', // 更新时间
+        //             lastInvestTime: '2020-01-13T16:00:00.000Z', // 上次定投日期
         //         }
         //     ];
         let list = [];
+        let info = {};
         window.onload = function() {
             this.getInitList();
-
-
             // let str = '';
             // for (let i = 0; i < list.length; i++) {
             //     str = str + '<div class="tr">' +
@@ -300,9 +448,9 @@ a{
             //         '<span class="td">' + list[i].profileAmount + '</span>' +
             //         '<span class="td">' + list[i].createTime + '</span>' +
             //         '<div class="td operation">' +
-            //             '<div onclick="showMore(' + list[i].id + ')">查看详情</div>' +
-            //             '<div onclick="toDetail(' + list[i].id + ')">显示更多</div>' +
-            //             ( list[i].valid === 1 ? '<div onclick="onStop(' + list[i].id + ')">停止执行</div>' : '' ) +
+            //             '<div onclick="showMore(' + list[i].id + ')">显示更多</div>' +
+            //             '<div onclick="onStop(' + list[i].id + ')">停止执行</div>' +
+            //             '<div onclick="toDetail(' + list[i].id + ')">查看详情</div>' +
             //         '</div>' +
             //     '</div>'
             // }
@@ -328,13 +476,13 @@ a{
                                 '<span class="td">' + list[i].balance + '</span>' +
                                 '<span class="td">' + that.calcRate(list[i].yields) + '</span>' +
                                 '<span class="td">' + list[i].profileAmount + '</span>' +
-                                '<span class="td">' + that.tranformTime(list[i].createTime) + '</span>' +
+                                '<span class="td">' + that.tranformShowTime(list[i].createTime) + '</span>' +
                                 '<div class="td operation">' +
-                                '<div onclick="showMore(' + list[i].id + ')">显示更多</div>' +
-                                '<div onclick="onStop(' + list[i].id + ')">停止执行</div>' +
-                                '<div onclick="toDetail(' + list[i].id + ')">查看详情</div>' +
+                                    '<div onclick="showMore(' + list[i].id + ')">显示更多</div>' +
+                                    '<div onclick="onStop(' + list[i].id + ')">停止执行</div>' +
+                                    '<div onclick="toDetail(' + list[i].id + ')">查看详情</div>' +
                                 '</div>' +
-                                '</div>'
+                            '</div>'
                         }
                     } else {
                         str = '<div class="no-data">暂无数据！</div>';
@@ -370,38 +518,40 @@ a{
 
         function showMore(id) {
             const that = this;
-            const info = list.filter((obj) => {
+            info = list.filter((obj) => {
                 return obj.id === id;
-            })[0]
+            })[0];
             document.getElementById('modalTitle').innerText = '详情';
             const ele = document.getElementById('modal');
             ele.style.display = 'block';
+            const modalContainer = document.getElementById('modalContainer')
+            modalContainer.style.width = '60%';
+            modalContainer.style.marginLeft = '20%';
+
             const content = document.getElementById('modalContent');
             const content2 = document.getElementById('modalContent2');
             content.style.display = 'block';
             content2.style.display = 'none';
-            const modalContainer = document.getElementById('modalContainer')
-            modalContainer.style.width = '60%';
-            modalContainer.style.marginLeft = '20%';
-            content.innerHTML = '<div class="more-info">' +
-                '<div class="info-item"><span class="info-name">基金名称：</span>' + info.name + '(' + info.code + ')' + '</div>' +
-                '<div class="info-item"><span class="info-name">账号资产：</span>' + info.balance + '</div>' +
-                '<div class="info-item"><span class="info-name">净值：</span>' + info.worth + '</div>' +
-                '<div class="info-item"><span class="info-name">收益率：</span>' + that.calcRate(info.yields) + '</div>' +
-                '<div class="info-item"><span class="info-name">总收益：</span>' + info.profileAmount + '</div>' +
-                '<div class="info-item"><span class="info-name">总买入金额：</span>' + info.buyAmount + '</div>' +
-                '<div class="info-item"><span class="info-name">总卖出金额：</span>' + info.saleAmount + '</div>' +
-                '<div class="info-item"><span class="info-name">总投资金额：</span>' + info.investAmount + '</div>' +
-                '<div class="info-item"><span class="info-name">定投次数：</span>' + info.investNum + '</div>' +
-                '<div class="info-item"><span class="info-name">定投频率：</span>' + info.frequence + '</div>' +
-                '<div class="info-item"><span class="info-name">定投基准金额：</span>' + info.investMoney + '</div>' +
-                '<div class="info-item"><span class="info-name">参考均线天数：</span>' + info.mean + '</div>' +
-                '<div class="info-item"><span class="info-name">参考振幅天数：</span>' + info.wave + '</div>' +
-                '<div class="info-item"><span class="info-name">策略类型：</span>' + (info.type === 1 ? "按照定投金额卖" : info.type === 2 ? "按照总资产卖" : "简单定投") + '</div>' +
-                '<div class="info-item"><span class="info-name">创建时间：</span>' + that.tranformTime(info.createTime) + '</div>' +
-                '<div class="info-item"><span class="info-name">更新时间：</span>' + that.tranformTime(info.updateTime) + '</div>' +
-                '<div class="info-item"><span class="info-name">上次定投日期：</span>' + info.lastInvestTime + '</div>' +
-            '</div>'
+            const arr = ['name', 'balance', 'worth', 'yields', 'profileAmount', 'buyAmount', 'saleAmount',
+                'investAmount', 'investNum', 'frequence', 'investMoney', 'mean', 'wave', 'type', 'createTime',
+                'updateTime', 'lastInvestTime'];
+            arr.map((item) => {
+                if (item === 'name') {
+                    document.getElementById('name').innerText = info.name + '(' + info.code + ')';
+                } else if (item === 'yields') {
+                    document.getElementById('yields').innerText = that.calcRate(info.yields);
+                } else if (item === 'type') {
+                    const txt = info.type == '1' ? "按照定投金额卖" : info.type == '2' ? "按照总资产卖" : "简单定投";
+                    document.getElementById('type').innerText = txt;
+                } else if (item === 'createTime' || item === 'updateTime' || item === 'lastInvestTime') {
+                    document.getElementById('createTime').innerText = that.tranformShowTime(info.createTime);
+                    document.getElementById('updateTime').innerText = that.tranformShowTime(info.updateTime);
+                    document.getElementById('lastInvestTime').innerText = that.tranformTime(info.lastInvestTime);
+                } else {
+                    document.getElementById(item).innerText = info[item];
+                }
+            })
+            this.hiddenEdit();
         }
 
         function onStop(id) {
@@ -423,17 +573,16 @@ a{
         }
 
         function toDetail(id) {
-            const content = document.getElementById('modalContent');
-            content.style.display = 'none';
-
-            document.getElementById('modalTitle').innerText = '更多信息';
             const ele = document.getElementById('modal');
             ele.style.display = 'block';
             const modalContainer = document.getElementById('modalContainer')
             modalContainer.style.width = '80%';
             modalContainer.style.marginLeft = '10%';
+            document.getElementById('modalTitle').innerText = '更多信息';
 
+            const content = document.getElementById('modalContent');
             const content2 = document.getElementById('modalContent2');
+            content.style.display = 'none';
             content2.style.display = 'block';
 
             let urlData = 'http://localhost:9200/fund/info' + "?fundId=" + id
@@ -451,7 +600,7 @@ a{
                     const investAmount = [];
                     if (data.data && data.data.length > 0) {
                         data.data.map((obj) => {
-                            x.push(that.tranformTime(obj.createTime));
+                            x.push(that.tranformShowTime(obj.createTime));
                             worth.push(obj.worth);
                             balance.push(obj.balance);
                             investAmount.push(obj.investAmount);
@@ -466,6 +615,84 @@ a{
             xhr.onerror = function (error) {
                 document.getElementById('modalContent2').innerHTML = '<div class="no-data">暂无数据！</div>';
             }
+        }
+
+        // 编辑信息
+        function onEdit() {
+            const editArr = ['frequence', 'investMoney', 'mean', 'wave', 'type', 'lastInvestTime'];
+            editArr.map((arr) => {
+                const val = document.getElementById(arr).innerText;
+                document.getElementById(arr).style.display = 'none';
+                document.getElementById(arr + 'Edit').style.display = 'block';
+                if (arr === 'type') {
+                    document.getElementById('typeInput').value = info.type;
+                } else {
+                    document.getElementById(arr + 'Input').value = val;
+                }
+            })
+        }
+
+        //隐藏需要编辑的栏位
+        function hiddenEdit(setVal) {
+            const editArr = ['frequence', 'investMoney', 'mean', 'wave', 'type', 'lastInvestTime'];
+            editArr.map((arr) => {
+                let val = '';
+                if (setVal === 'update') {
+                    val = document.getElementById(arr + 'Input').value;
+                    console.log(val);
+                }
+                document.getElementById(arr + 'Edit').style.display = 'none';
+                document.getElementById(arr).style.display = 'block';
+                if (setVal === 'update') {
+                    if (arr === 'type') {
+                        info.type = val;
+                        document.getElementById('type').innerText = (val == '1' ? "按照定投金额卖" : val == '2' ? "按照总资产卖" : "简单定投");
+                    } else {
+                        document.getElementById(arr).innerText = val;
+                    }
+                }
+            })
+        }
+
+        // 保存编辑后的信息
+        function onSave() {
+            let urlData = '';
+            let that = this;
+            // that.hiddenEdit('update');
+
+            const inputs = ['frequenceInput', 'investMoneyInput', 'meanInput', 'waveInput', 'typeInput', 'lastInvestTimeInput'];
+            urlData = 'http://localhost:9200/fund/update' + "?data=" + info.id + '$' + this.formatData(inputs).join('$');
+            console.log(urlData);
+            
+            let xhr = new XMLHttpRequest();
+            xhr.open('GET', urlData, true);
+            xhr.setRequestHeader("Access-Control-Allow-Origin", "*");
+            xhr.send();
+            xhr.onreadystatechange = function() {
+                if(xhr.readyState === 4 && xhr.status ===200){
+                    alert('编辑成功！');
+                    that.hiddenEdit('update');
+                } else {
+                    alert('编辑失败！');
+                }
+            }
+            xhr.onerror = function (error) {
+                // alert('接口调用失败！');
+            }
+        }
+
+        function updateValue(id) {
+            const val = document.getElementById(id).value;
+            document.getElementById(id).value = val;
+        }
+
+        function formatData(inputs) {
+            let requestValue = [];
+            for (let i = 0; i < inputs.length; i++) {
+                res = document.getElementById(inputs[i]);
+                requestValue.push(res.value);
+            }
+            return requestValue;
         }
 
         function setEcharts(x, worth, balance, investAmount) {
@@ -585,7 +812,7 @@ a{
             ele.style.display = 'none';
         }
 
-        function tranformTime(item_date) {
+        function tranformShowTime(item_date) {
             let date = new Date(item_date);
             let YY = date.getFullYear() + "-";
             let MM =
@@ -600,6 +827,17 @@ a{
             let ss =
                 date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds();
             return YY + MM + DD + " " + hh + mm;
+        }
+
+        function tranformTime(item_date) {
+            let date = new Date(item_date);
+            let YY = date.getFullYear();
+            let MM = (date.getMonth() + 1 < 10
+                ? "0" + (date.getMonth() + 1)
+                : date.getMonth() + 1);
+            let DD = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
+            console.log(YY + MM + DD);
+            return YY + MM + DD;
         }
 
     </script>
