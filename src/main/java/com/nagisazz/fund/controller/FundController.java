@@ -76,6 +76,14 @@ public class FundController {
         return fundService.start(params);
     }
 
+    @GetMapping("/update")
+    @ResponseBody
+    public OperationResult update(@RequestParam("data") String data){
+        log.info("update参数：{}", data);
+        String[] params = data.split("\\$");
+        return fundService.update(params);
+    }
+
     @GetMapping("/list")
     @ResponseBody
     public OperationResult list(){

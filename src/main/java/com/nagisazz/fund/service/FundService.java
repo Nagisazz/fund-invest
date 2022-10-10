@@ -9,7 +9,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Slf4j
@@ -72,5 +74,19 @@ public class FundService {
 
     public void stop(Long fundId) {
         fundInfoMapper.updateByPrimaryKeySelective(FundInfo.builder().id(fundId).valid(0).build());
+    }
+
+    public OperationResult update(String[] params) {
+        fundInfoMapper.updateByPrimaryKeySelective(FundInfo.builder()
+                .id(Long.valueOf(params[0]))
+                .frequence(Integer.valueOf(params[1]))
+                .investAmount(Double.parseDouble(params[2]))
+                .mean(Integer.valueOf(params[3]))
+                .wave(Integer.valueOf(params[4]))
+                .type(Integer.valueOf(params[5]))
+                .lastInvestTime(LocalDate.parse(params[6], DateTimeFormatter.ofPattern("yyyyMMdd")).atStartOfDay())
+                .updateTime(LocalDateTime.now())
+                .build());
+        return OperationResult.buildSuccess("更新成功");
     }
 }
