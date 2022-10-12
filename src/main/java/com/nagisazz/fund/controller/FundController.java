@@ -35,19 +35,19 @@ public class FundController {
     private String loginPassword;
 
     @PostMapping("login")
-    public String login(@RequestParam("username") String username,
+    public OperationResult login(@RequestParam("username") String username,
                                  @RequestParam("password") String password,
                                  HttpSession session) {
 
         if (!loginName.equals(username) || !loginPassword.equals(password)){
-            return "redirect:fund-login.html";
+            return OperationResult.buildFail("用户名或密码错误");
         }
 
         //登录成功后，将uid和username存入到HttpSession中
         session.setAttribute("uid", username);
 
         // 将以上返回值和状态码OK封装到响应结果中并返回
-        return "redirect:fund-search.html";
+        return OperationResult.buildSuccess("登录成功");
     }
 
     /**
