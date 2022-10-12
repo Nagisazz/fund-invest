@@ -35,6 +35,7 @@ public class FundController {
     private String loginPassword;
 
     @PostMapping("login")
+    @ResponseBody
     public OperationResult login(@RequestParam("username") String username,
                                  @RequestParam("password") String password,
                                  HttpSession session) {
