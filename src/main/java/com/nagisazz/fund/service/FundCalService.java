@@ -58,6 +58,7 @@ public class FundCalService {
         // 记录当天投资日志信息
         InvestLog investLog = new InvestLog();
         BeanUtils.copyProperties(fundInfo, investLog);
+        investLog.setId(null);
         investLog.setFundId(fundInfo.getId());
         investLog.setInvestType(1);
         investLog.setCreateTime(LocalDateTime.now());
