@@ -80,7 +80,7 @@ public class FundService {
         fundInfoMapper.updateByPrimaryKeySelective(FundInfo.builder()
                 .id(Long.valueOf(params[0]))
                 .frequence(Integer.valueOf(params[1]))
-                .investAmount(Double.parseDouble(params[2]))
+                .investMoney(Integer.valueOf(params[2]))
                 .mean(Integer.valueOf(params[3]))
                 .wave(Integer.valueOf(params[4]))
                 .type(Integer.valueOf(params[5]))
