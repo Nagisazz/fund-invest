@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>列表</title>
     <script src="http://1.15.87.105:11000/file/echarts.min%20%281%29.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 </head>
 
 <style>
@@ -109,6 +110,7 @@ a{
     border-top: none;
     background-color: transparent;
     cursor: pointer;
+    line-height: 2;
 }
 .list-info .tr:hover{
     background-color: #fafafa;
@@ -371,46 +373,50 @@ a{
     <script>
         // const detail = [
         //     {
-        //         id: '1',
-        //         fundId: 'www',
-        //         balance: '30000', // 账户资产
-        //         worth: '1.04211', // 净值
-        //         yields: '12%', // 收益率
-        //         profileAmount: '2013', // 总收益
-        //         buyAmount: '37000', // 总买入金额
-        //         saleAmount: '7000', // 总卖出金额
-        //         investAmount: '30000', // 总投资金额
-        //         investType: '1', // 类型
-        //         price: '1500', // 定投金额
-        //         rate: '5%', // 定投比率
-        //         meanAmount: '34', // 均线金额
-        //         waveAmount: '8%', // 振幅比率
-        //         createTime: '220220914', // 开始时间
-        //         updateTime: '20220916', // 更新时间
+        //         balance: 4746.2,
+        //         buyAmount: 5000,
+        //         code: "012414",
+        //         createTime: "2022-10-12T10:21:04",
+        //         frequence: 11,
+        //         id: 1,
+        //         investAmount: 500,
+        //         investMoney: 500,
+        //         investNum: 0,
+        //         lastInvestTime: "2022-10-06T00:00:00",
+        //         mean: 250,
+        //         name: "招商中证白酒指数(LOF)C",
+        //         profileAmount: -253.8,
+        //         saleAmount: 0,
+        //         type: 2,
+        //         updateTime: "2022-10-12T10:26:08",
+        //         valid: 1,
+        //         wave: 5,
+        //         worth: 0.9738,
+        //         yields: -0.0508,
         //     }
         // ];
         // const list = [
         //         {
+        //             balance: 4746.2,
+        //             buyAmount: 5000,
+        //             code: "012414",
+        //             createTime: "2022-10-12T10:21:04",
+        //             frequence: 11,
         //             id: 1,
-        //             name: '名称',
-        //             code: 'www',
-        //             balance: '30000', // 账户资产
-        //             worth: '1.04211', // 净值
-        //             yields: '12%', // 收益率
-        //             profileAmount: '2013', // 总收益
-        //             buyAmount: '37000', // 总买入金额
-        //             saleAmount: '7000', // 总卖出金额
-        //             investAmount: '30000', // 总投资金额
-        //             investNum: '', // 定投次数
-        //             frequence: '2', // 定投频率
-        //             investMoney: '1000', // 定投基准金额
-        //             mean: '500', // 定投金额
-        //             wave: '5', // 定投比率
-        //             type: 1, // 策略类型
-        //             valid: 0, // 是否有效 1是0否
-        //             createTime: '2020-01-13T16:00:00.000Z', // 开始时间
-        //             updateTime: '2020-01-13T16:00:00.000Z', // 更新时间
-        //             lastInvestTime: '2020-01-13T16:00:00.000Z', // 上次定投日期
+        //             investAmount: 500,
+        //             investMoney: 500,
+        //             investNum: 0,
+        //             lastInvestTime: "2022-10-06T00:00:00",
+        //             mean: 250,
+        //             name: "招商中证白酒指数(LOF)C",
+        //             profileAmount: -253.8,
+        //             saleAmount: 0,
+        //             type: 2,
+        //             updateTime: "2022-10-12T10:26:08",
+        //             valid: 1,
+        //             wave: 5,
+        //             worth: 0.9738,
+        //             yields: -0.0508,
         //         },
         //         {
         //             id: 2,
@@ -430,15 +436,16 @@ a{
         //             wave: '8', // 定投比率
         //             type: 2, // 策略类型
         //             valid: 1, // 是否有效 1是0否
-        //             createTime: '2020-01-13T16:00:00.000Z', // 开始时间
-        //             updateTime: '2020-01-13T16:00:00.000Z', // 更新时间
-        //             lastInvestTime: '2020-01-13T16:00:00.000Z', // 上次定投日期
+        //             createTime: "2022-10-12T10:21:04", // 开始时间
+        //             updateTime: "2022-10-12T10:26:08", // 更新时间
+        //             lastInvestTime: "2022-10-06T00:00:00", // 上次定投日期
         //         }
         //     ];
         let list = [];
         let info = {};
         window.onload = function() {
             this.getInitList();
+            // var that = this;
             // let str = '';
             // for (let i = 0; i < list.length; i++) {
             //     str = str + '<div class="tr">' +
@@ -446,7 +453,7 @@ a{
             //         '<span class="td">' + list[i].balance + '</span>' +
             //         '<span class="td">' + list[i].yields + '</span>' +
             //         '<span class="td">' + list[i].profileAmount + '</span>' +
-            //         '<span class="td">' + list[i].createTime + '</span>' +
+            //         '<span class="td">' + that.tranformShowTime(list[i].createTime) + '</span>' +
             //         '<div class="td operation">' +
             //             '<div onclick="showMore(' + list[i].id + ')">显示更多</div>' +
             //             '<div onclick="onStop(' + list[i].id + ')">停止执行</div>' +
@@ -460,9 +467,25 @@ a{
         function getInitList() {
             const that = this;
             let urlData = 'http://localhost:9200/fund/list';
+            // $.ajax({
+            //     url: urlData,
+            //     type: 'get',
+            //     data: '',
+            //     headers:{'Content-Type':'application/x-www-form-urlencoded;charset=utf8'},
+            //     dataType: 'json',
+            //     timeout: '60',
+            //     success: function (res) {
+            //         console.log(res);
+            //         // list = res.data;
+            //     },
+            //     error: function (res) {
+            //         str = '<div class="no-data">暂无数据！</div>';
+            //         document.getElementById('tr-table').innerHTML = str;
+            //     }
+            // })
             let xhr = new XMLHttpRequest();
             xhr.open('GET', urlData, true);
-            xhr.setRequestHeader("Access-Control-Allow-Origin", "*");
+            xhr.setRequestHeader('X-Requested-With','XMLHttpRequest')
             xhr.send();
             xhr.onreadystatechange = function() {
                 if(xhr.readyState === 4 && xhr.status ===200){
@@ -473,9 +496,9 @@ a{
                         for (let i = 0; i < list.length; i++) {
                             str = str + '<div class="tr">' +
                                 '<span class="td">' + list[i].name + '</span>' +
-                                '<span class="td">' + list[i].balance + '</span>' +
+                                '<span class="td">' + that.handleVal(list[i].balance) + '</span>' +
                                 '<span class="td">' + that.calcRate(list[i].yields) + '</span>' +
-                                '<span class="td">' + list[i].profileAmount + '</span>' +
+                                '<span class="td">' + that.handleVal(list[i].profileAmount) + '</span>' +
                                 '<span class="td">' + that.tranformShowTime(list[i].createTime) + '</span>' +
                                 '<div class="td operation">' +
                                     '<div onclick="showMore(' + list[i].id + ')">显示更多</div>' +
@@ -488,6 +511,9 @@ a{
                         str = '<div class="no-data">暂无数据！</div>';
                     }
                     document.getElementById('tr-table').innerHTML = str;
+                } else {
+                    str = '<div class="no-data">暂无数据！</div>';
+                    document.getElementById('tr-table').innerHTML = str; 
                 }
             }
             xhr.onerror = function (error) {
@@ -573,12 +599,16 @@ a{
         }
 
         function toDetail(id) {
+            const that = this;
+            info = list.filter((obj) => {
+                return obj.id === id;
+            })[0];
             const ele = document.getElementById('modal');
             ele.style.display = 'block';
             const modalContainer = document.getElementById('modalContainer')
             modalContainer.style.width = '80%';
             modalContainer.style.marginLeft = '10%';
-            document.getElementById('modalTitle').innerText = '更多信息';
+            document.getElementById('modalTitle').innerText = '更多信息' + '——' + info.name;
 
             const content = document.getElementById('modalContent');
             const content2 = document.getElementById('modalContent2');
@@ -590,7 +620,6 @@ a{
             xhr.open('GET', urlData, true);
             xhr.setRequestHeader("Access-Control-Allow-Origin", "*");
             xhr.send();
-            const that = this;
             xhr.onreadystatechange = function() {
                 if(xhr.readyState === 4 && xhr.status === 200){
                     const data = JSON.parse(xhr.responseText);
@@ -602,8 +631,8 @@ a{
                         data.data.map((obj) => {
                             x.push(that.tranformShowTime(obj.createTime));
                             worth.push(obj.worth);
-                            balance.push(obj.balance);
-                            investAmount.push(obj.investAmount);
+                            balance.push(that.handleVal(obj.balance));
+                            investAmount.push(that.handleVal(obj.investAmount));
                         })
                         // document.getElementById('modalContent').removeAttribute('_echarts_instance_');
                         that.setEcharts(x, worth, balance, investAmount);
@@ -664,21 +693,38 @@ a{
             urlData = 'http://localhost:9200/fund/update' + "?data=" + info.id + '$' + this.formatData(inputs).join('$');
             console.log(urlData);
             
-            let xhr = new XMLHttpRequest();
-            xhr.open('GET', urlData, true);
-            xhr.setRequestHeader("Access-Control-Allow-Origin", "*");
-            xhr.send();
-            xhr.onreadystatechange = function() {
-                if(xhr.readyState === 4 && xhr.status ===200){
+            // let xhr = new XMLHttpRequest();
+            // xhr.open('GET', urlData, true);
+            // xhr.setRequestHeader("Access-Control-Allow-Origin", "*");
+            // xhr.send();
+            // xhr.onreadystatechange = function() {
+            //     if(xhr.readyState === 4 && xhr.status ===200){
+            //         alert('编辑成功！');
+            //         that.hiddenEdit('update');
+            //     }
+            //     // } else {
+            //     //     alert('编辑失败！');
+            //     // }
+            // }
+            // xhr.onerror = function (error) {
+            //     // alert('接口调用失败！');
+            // }
+            $.ajax({
+                url: urlData,//请求的地址
+                type: 'get',//请求的方式
+                data: '',//携带到后端的参数
+                dataType: 'json',// 期望后端返回的数据类型
+                headers:{'Content-Type':'application/x-www-form-urlencoded;charset=utf8'},
+                beforeSend:function (request) {
+                    console.log('加载中。。。');
+                },
+                success: function (res) {
                     alert('编辑成功！');
                     that.hiddenEdit('update');
-                } else {
-                    alert('编辑失败！');
-                }
-            }
-            xhr.onerror = function (error) {
-                // alert('接口调用失败！');
-            }
+                },//成功的回调函数 res就是后端响应回来的数据
+                error: function (res) {
+                },
+            })
         }
 
         function updateValue(id) {
@@ -729,13 +775,13 @@ a{
                     {
                         show: true,
                         realtime: true,
-                        start: 50,
+                        start: 0,
                         end: 100
                     },
                     {
                         type: 'inside',
                         realtime: true,
-                        start: 50,
+                        start: 0,
                         end: 100
                     }
                 ],
@@ -751,6 +797,7 @@ a{
                     {
                         name: '净值（元）',
                         type: 'value',
+                        scale: true,
                         axisLine: {
                             show: true
                         },
@@ -764,6 +811,7 @@ a{
                     {
                         name: '账户资产/投资金额（元）',
                         type: 'value',
+                        scale: true,
                         axisLine: {
                             show: true
                         },
@@ -779,6 +827,7 @@ a{
                     {
                         name: '净值',
                         type: 'line',
+                        scale: true,
                         lineStyle: {
                             width: 2
                         },
@@ -831,13 +880,17 @@ a{
 
         function tranformTime(item_date) {
             let date = new Date(item_date);
-            let YY = date.getFullYear();
-            let MM = (date.getMonth() + 1 < 10
+            let YY = date.getFullYear() + "";
+            let MM =
+                (date.getMonth() + 1 < 10
                 ? "0" + (date.getMonth() + 1)
-                : date.getMonth() + 1);
+                : date.getMonth() + 1) + "";
             let DD = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
-            console.log(YY + MM + DD);
             return YY + MM + DD;
+        }
+
+        function handleVal(val) {
+            return val.toFixed(2);
         }
 
     </script>

@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>登录</title>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 </head>
 
 <style>
@@ -170,14 +171,14 @@ a{
             <div class="input-txt" >
                 <span class="input-name">账号：</span>
                 <div class="input-box">
-                    <input type="text" id="user_name" oninput="updateValue('user_name')">
+                    <input type="text" value="zz" id="user_name" oninput="updateValue('user_name')">
                     <div class="del-icon" onclick="onSingleClear('user_name')"> <span class="icon">X</span> </div>
                 </div>
             </div>
             <div class="input-txt" >
                 <span class="input-name">密码：</span>
                 <div class="input-box">
-                    <input type="password" id="password" oninput="updateValue('password')">
+                    <input type="password" value="960605" id="password" oninput="updateValue('password')">
                     <div class="del-icon" onclick="onSingleClear('password')"> <span class="icon">X</span> </div>
                 </div>
             </div>
@@ -200,20 +201,39 @@ a{
 
 
         function onLogin() {
-            let dataUrl = 'http://localhost:9200/fund/login?username=' + document.getElementById('user_name').value +
+            // let dataUrl = 'http://localhost:9200/fund/login?username=' + document.getElementById('user_name').value +
+            //         '&password=' + document.getElementById('password').value
+            // let xhr = new XMLHttpRequest();
+            // xhr.open('POST', dataUrl, true);
+            // xhr.setRequestHeader("Access-Control-Allow-Origin", "*");
+            // xhr.send();
+            // xhr.onreadystatechange = function() {
+            //     if(xhr.readyState === 4 && xhr.status ===200){
+            //         window.location.href = 'http://localhost:9200/fund/fund-list.html';
+            //         // window.location.href = 'file:///C:/Users/chp/Desktop/fund-list.html';
+            //     }
+            // }
+            // xhr.onerror = function (error) {
+            //     console.log(error)
+            // }
+            let urlData = 'http://localhost:9200/fund/login?username=' + document.getElementById('user_name').value +
                     '&password=' + document.getElementById('password').value
-            let xhr = new XMLHttpRequest();
-            xhr.open('POST', dataUrl, true);
-            xhr.setRequestHeader("Access-Control-Allow-Origin", "*");
-            xhr.send();
-            xhr.onreadystatechange = function() {
-                if(xhr.readyState === 4 && xhr.status ===200){
-                    window.location.href = 'http://localhost:9200/fund/fund-search.html';
-                }
-            }
-            xhr.onerror = function (error) {
-                console.log(error)
-            }
+            $.ajax({
+                url: urlData,//请求的地址
+                type: 'post',//请求的方式
+                data: '',//携带到后端的参数
+                dataType: 'json',// 期望后端返回的数据类型
+                headers:{'Content-Type':'application/x-www-form-urlencoded;charset=utf8'},
+                beforeSend:function (request) {
+                },
+                success: function (res) {
+                    window.location.href = 'http://localhost:9200/fund/fund-list.html';
+                    // window.location.href = 'file:///C:/Users/chp/Desktop/fund-list.html';
+                },//成功的回调函数 res就是后端响应回来的数据
+                error: function (res) {
+                    // window.location.href = 'http://localhost:9200/fund/fund-login.html';
+                },
+            })
         }
     </script>
 </body>
