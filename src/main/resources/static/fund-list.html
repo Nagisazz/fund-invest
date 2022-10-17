@@ -693,22 +693,6 @@ a{
             urlData = 'http://localhost:9200/fund/update' + "?data=" + info.id + '$' + this.formatData(inputs).join('$');
             console.log(urlData);
             
-            // let xhr = new XMLHttpRequest();
-            // xhr.open('GET', urlData, true);
-            // xhr.setRequestHeader("Access-Control-Allow-Origin", "*");
-            // xhr.send();
-            // xhr.onreadystatechange = function() {
-            //     if(xhr.readyState === 4 && xhr.status ===200){
-            //         alert('编辑成功！');
-            //         that.hiddenEdit('update');
-            //     }
-            //     // } else {
-            //     //     alert('编辑失败！');
-            //     // }
-            // }
-            // xhr.onerror = function (error) {
-            //     // alert('接口调用失败！');
-            // }
             $.ajax({
                 url: urlData,//请求的地址
                 type: 'get',//请求的方式

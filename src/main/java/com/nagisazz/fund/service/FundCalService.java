@@ -148,7 +148,7 @@ public class FundCalService {
         String wordMean = (Double.parseDouble(worth) / investLog.getMeanAmount() - 1) > 0 ? "高于" : "低于";
         String wordInvest = investLog.getInvestType() == 3 ? "卖出" + investLog.getPrice() + "元" :
                 (investLog.getPrice() < 0 ? "卖出" + Math.abs(investLog.getPrice()) + "元" : "买入" + investLog.getPrice() + "元");
-        String content = fundInfo.getName() + "基金目前持有收益" + fundInfo.getProfileAmount() + "元，收益率" +
+        String content = fundInfo.getName() + "基金目前持有收益" + transPercent(fundInfo.getProfileAmount()) + "元，收益率" +
                 transPercent(fundInfo.getYields()) + "%，" + wordMean + "均线" +
                 Math.abs(transPercent(Double.parseDouble(worth) / investLog.getMeanAmount() - 1)) +
                 "%。建议今日" + wordInvest;

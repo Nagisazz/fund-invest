@@ -69,7 +69,9 @@ public class FundService {
     }
 
     public List<InvestLog> getInfo(Long fundId) {
-        return investLogMapper.selectList(InvestLog.builder().fundId(fundId).build());
+        List<InvestLog> investLogs = investLogMapper.selectList(InvestLog.builder().fundId(fundId).build());
+        investLogs.removeIf(investLog -> investLog.getBalance() == null);
+        return investLogs;
     }
 
     public void stop(Long fundId) {

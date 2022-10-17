@@ -171,14 +171,14 @@ a{
             <div class="input-txt" >
                 <span class="input-name">账号：</span>
                 <div class="input-box">
-                    <input type="text" value="zz" id="user_name" oninput="updateValue('user_name')">
+                    <input type="text" value="" id="user_name" oninput="updateValue('user_name')">
                     <div class="del-icon" onclick="onSingleClear('user_name')"> <span class="icon">X</span> </div>
                 </div>
             </div>
             <div class="input-txt" >
                 <span class="input-name">密码：</span>
                 <div class="input-box">
-                    <input type="password" value="960605" id="password" oninput="updateValue('password')">
+                    <input type="password" value="" id="password" oninput="updateValue('password')">
                     <div class="del-icon" onclick="onSingleClear('password')"> <span class="icon">X</span> </div>
                 </div>
             </div>
@@ -201,21 +201,6 @@ a{
 
 
         function onLogin() {
-            // let dataUrl = 'http://localhost:9200/fund/login?username=' + document.getElementById('user_name').value +
-            //         '&password=' + document.getElementById('password').value
-            // let xhr = new XMLHttpRequest();
-            // xhr.open('POST', dataUrl, true);
-            // xhr.setRequestHeader("Access-Control-Allow-Origin", "*");
-            // xhr.send();
-            // xhr.onreadystatechange = function() {
-            //     if(xhr.readyState === 4 && xhr.status ===200){
-            //         window.location.href = 'http://localhost:9200/fund/fund-list.html';
-            //         // window.location.href = 'file:///C:/Users/chp/Desktop/fund-list.html';
-            //     }
-            // }
-            // xhr.onerror = function (error) {
-            //     console.log(error)
-            // }
             let urlData = 'http://localhost:9200/fund/login?username=' + document.getElementById('user_name').value +
                     '&password=' + document.getElementById('password').value
             $.ajax({
