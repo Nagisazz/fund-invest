@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.nagisazz.fund.dao.FundInfoExtendMapper">
 
-    <select id="selectTodayInvestLog" resultType="com.nagisazz.fund.entity.InvestLog">
+    <select id="selectTodayInvestLog" resultMap="com.nagisazz.fund.dao.base.InvestLogMapper.BaseResultMap">
         select
         <include refid="com.nagisazz.fund.dao.base.InvestLogMapper.Base_Column_List" />
         from t_invest_log
