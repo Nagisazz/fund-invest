@@ -12,6 +12,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
@@ -22,8 +23,8 @@ import java.time.LocalDateTime;
 @Service
 public class FundCalService {
 
-    @Autowired
-    private FundInfoExtendMapper fundInfoMapper;
+    @Resource
+    private FundInfoExtendMapper fundInfoExtendMapper;
 
     @Autowired
     private InvestLogMapper investLogMapper;
@@ -53,7 +54,7 @@ public class FundCalService {
         fundInfo.setYields(yields);
         fundInfo.setProfileAmount(fundInfo.getProfileAmount() + profile);
         fundInfo.setUpdateTime(LocalDateTime.now());
-        fundInfoMapper.updateByPrimaryKeySelective(fundInfo);
+        fundInfoExtendMapper.updateByPrimaryKeySelective(fundInfo);
 
         // 记录当天投资日志信息
         InvestLog investLog = new InvestLog();
@@ -98,7 +99,7 @@ public class FundCalService {
         fundInfo.setInvestNum(fundInfo.getInvestNum() + 1);
         fundInfo.setUpdateTime(LocalDateTime.now());
         fundInfo.setLastInvestTime(LocalDateTime.now());
-        fundInfoMapper.updateByPrimaryKeySelective(fundInfo);
+        fundInfoExtendMapper.updateByPrimaryKeySelective(fundInfo);
 
         // 记录当天投资日志信息
         InvestLog investLog = new InvestLog();

@@ -1,6 +1,6 @@
 package com.nagisazz.fund.controller;
 
-import com.nagisazz.fund.common.result.OperationResult;
+import com.nagisazz.base.pojo.OperationResult;
 import com.nagisazz.fund.entity.FundInfo;
 import com.nagisazz.fund.entity.InvestLog;
 import com.nagisazz.fund.service.FundCalService;
@@ -10,11 +10,12 @@ import com.nagisazz.fund.vo.ResultData;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Slf4j
@@ -27,29 +28,6 @@ public class FundController {
 
     @Autowired
     private FundService fundService;
-
-    @Value("${login.username}")
-    private String loginName;
-
-    @Value("${login.password}")
-    private String loginPassword;
-
-    @PostMapping("login")
-    @ResponseBody
-    public OperationResult login(@RequestParam("username") String username,
-                                 @RequestParam("password") String password,
-                                 HttpSession session) {
-
-        if (!loginName.equals(username) || !loginPassword.equals(password)){
-            return OperationResult.buildFail("用户名或密码错误");
-        }
-
-        //登录成功后，将uid和username存入到HttpSession中
-        session.setAttribute("uid", username);
-
-        // 将以上返回值和状态码OK封装到响应结果中并返回
-        return OperationResult.buildSuccess("登录成功");
-    }
 
     /**
      * 单次定投
@@ -89,20 +67,20 @@ public class FundController {
     @ResponseBody
     public OperationResult list(){
         List<FundInfo> fundInfos = fundService.getList();
-        return OperationResult.buildSuccess(fundInfos);
+        return OperationResult.buildSuccessResult(fundInfos);
     }
 
     @GetMapping("info")
     @ResponseBody
     public OperationResult info(@RequestParam("fundId") Long fundId){
         List<InvestLog> investLogs = fundService.getInfo(fundId);
-        return OperationResult.buildSuccess(investLogs);
+        return OperationResult.buildSuccessResult(investLogs);
     }
 
     @GetMapping("stop")
     @ResponseBody
     public OperationResult stop(@RequestParam("fundId") Long fundId){
         fundService.stop(fundId);
-        return OperationResult.buildSuccess(null);
+        return OperationResult.buildSuccessResult(null);
     }
 }

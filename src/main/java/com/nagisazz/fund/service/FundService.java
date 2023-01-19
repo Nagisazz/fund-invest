@@ -1,14 +1,14 @@
 package com.nagisazz.fund.service;
 
-import com.nagisazz.fund.common.result.OperationResult;
+import com.nagisazz.base.pojo.OperationResult;
 import com.nagisazz.fund.dao.FundInfoExtendMapper;
 import com.nagisazz.fund.dao.base.InvestLogMapper;
 import com.nagisazz.fund.entity.FundInfo;
 import com.nagisazz.fund.entity.InvestLog;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -18,13 +18,13 @@ import java.util.List;
 @Service
 public class FundService {
 
-    @Autowired
-    private FundInfoExtendMapper fundInfoMapper;
+    @Resource
+    private FundInfoExtendMapper fundInfoExtendMapper;
 
-    @Autowired
+    @Resource
     private FundInfoService fundInfoService;
 
-    @Autowired
+    @Resource
     private InvestLogMapper investLogMapper;
 
     /**
@@ -56,16 +56,16 @@ public class FundService {
                     .createTime(LocalDateTime.now())
                     .updateTime(LocalDateTime.now())
                     .build();
-            fundInfoMapper.insertSelective(fundInfo);
+            fundInfoExtendMapper.insertSelective(fundInfo);
         } catch (Exception e) {
             log.error("开始持续计算失败", e);
-            return OperationResult.buildFail("参数错误，开始持续计算失败");
+            return OperationResult.buildFailureResult("参数错误，开始持续计算失败");
         }
-        return OperationResult.buildSuccess("开始持续计算成功");
+        return OperationResult.buildSuccessResult("开始持续计算成功");
     }
 
     public List<FundInfo> getList() {
-        return fundInfoMapper.selectList(FundInfo.builder().valid(1).build());
+        return fundInfoExtendMapper.selectList(FundInfo.builder().valid(1).build());
     }
 
     public List<InvestLog> getInfo(Long fundId) {
@@ -75,11 +75,11 @@ public class FundService {
     }
 
     public void stop(Long fundId) {
-        fundInfoMapper.updateByPrimaryKeySelective(FundInfo.builder().id(fundId).valid(0).build());
+        fundInfoExtendMapper.updateByPrimaryKeySelective(FundInfo.builder().id(fundId).valid(0).build());
     }
 
     public OperationResult update(String[] params) {
-        fundInfoMapper.updateByPrimaryKeySelective(FundInfo.builder()
+        fundInfoExtendMapper.updateByPrimaryKeySelective(FundInfo.builder()
                 .id(Long.valueOf(params[0]))
                 .frequence(Integer.valueOf(params[1]))
                 .investMoney(Integer.valueOf(params[2]))
@@ -89,6 +89,6 @@ public class FundService {
                 .lastInvestTime(LocalDate.parse(params[6], DateTimeFormatter.ofPattern("yyyyMMdd")).atStartOfDay())
                 .updateTime(LocalDateTime.now())
                 .build());
-        return OperationResult.buildSuccess("更新成功");
+        return OperationResult.buildSuccessResult("更新成功");
     }
 }

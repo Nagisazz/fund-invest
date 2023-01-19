@@ -1,13 +1,11 @@
 package com.nagisazz.fund.service;
 
-import com.alibaba.fastjson.JSON;
-import com.nagisazz.fund.vo.FundTodayInfo;
+import com.nagisazz.base.util.RestHelper;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
+import javax.annotation.Resource;
 import java.text.MessageFormat;
 
 @Slf4j
@@ -23,11 +21,11 @@ public class MsgService {
     @Value("${pushplus.groupId}")
     private String groupId;
 
-    @Autowired
-    private RestTemplate restTemplate;
+    @Resource
+    private RestHelper restHelper;
 
     public void sendMsg(String title, String content) {
         String sendMsgUrl = MessageFormat.format(url, token, title, content, groupId);
-        restTemplate.getForObject(sendMsgUrl, String.class);
+        restHelper.get(sendMsgUrl);
     }
 }

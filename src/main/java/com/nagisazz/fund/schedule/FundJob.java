@@ -1,7 +1,6 @@
 package com.nagisazz.fund.schedule;
 
 import com.nagisazz.fund.dao.FundInfoExtendMapper;
-import com.nagisazz.fund.dao.base.InvestLogMapper;
 import com.nagisazz.fund.entity.FundInfo;
 import com.nagisazz.fund.entity.InvestLog;
 import com.nagisazz.fund.service.FundCalService;
@@ -9,10 +8,10 @@ import com.nagisazz.fund.service.FundInfoService;
 import com.xxl.job.core.context.XxlJobHelper;
 import com.xxl.job.core.handler.annotation.XxlJob;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
+import javax.annotation.Resource;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -20,13 +19,13 @@ import java.util.List;
 @Component
 public class FundJob {
 
-    @Autowired
-    private FundInfoExtendMapper fundInfoMapper;
+    @Resource
+    private FundInfoExtendMapper fundInfoExtendMapper;
 
-    @Autowired
+    @Resource
     private FundInfoService fundInfoService;
 
-    @Autowired
+    @Resource
     private FundCalService fundCalService;
 
     // 定时任务1：周一到周五23点更新t_fund_info表中所有有效数据
@@ -37,7 +36,7 @@ public class FundJob {
         final String jobParam = XxlJobHelper.getJobParam();
         log.info("开始执行【worth】任务，jobParam：{}", jobParam);
         // 所有正在持续计算的基金
-        final List<FundInfo> fundInfos = fundInfoMapper.selectList(FundInfo.builder().valid(1).build());
+        final List<FundInfo> fundInfos = fundInfoExtendMapper.selectList(FundInfo.builder().valid(1).build());
         if (CollectionUtils.isEmpty(fundInfos)) {
             XxlJobHelper.handleSuccess("worth成功，没有找到需要计算的基金");
             return;
@@ -48,7 +47,7 @@ public class FundJob {
         }
         for (FundInfo fundInfo : fundInfos) {
             // 判断当天是否有定投记录
-            final InvestLog investLog = fundInfoMapper.selectTodayInvestLog(fundInfo.getId());
+            final InvestLog investLog = fundInfoExtendMapper.selectTodayInvestLog(fundInfo.getId());
             // 没有定投记录，正常计算
             if (investLog == null) {
                 fundCalService.calNormal(fundInfo);
@@ -68,7 +67,7 @@ public class FundJob {
         final String jobParam = XxlJobHelper.getJobParam();
         log.info("开始执行【invest】任务，jobParam：{}", jobParam);
         // 所有正在持续计算的基金
-        final List<FundInfo> fundInfos = fundInfoMapper.selectNeedInvest();
+        final List<FundInfo> fundInfos = fundInfoExtendMapper.selectNeedInvest();
         if (CollectionUtils.isEmpty(fundInfos)) {
             XxlJobHelper.handleSuccess("invest成功，没有找到需要计算的基金");
             return;

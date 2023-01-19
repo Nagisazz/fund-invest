@@ -1,4 +1,6 @@
 spring:
+  application:
+    name: fund
   datasource:
     url: jdbc:mysql://127.0.0.1:3306/fund?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useAffectedRows=true
     driver-class-name: com.mysql.jdbc.Driver
@@ -19,24 +21,21 @@ server:
 url:
   fund: https://fundgz.1234567.com.cn/js/{code}.js?rt=
 
-login:
-  username: root
-  password: 123456
+job:
+  addresses: http://127.0.0.1:8000/xxl-job-admin
+  accessToken: root
+  executor:
+    appname: fund
+    address: http://127.0.0.1:1000
+    ip:
+    port: 9201
+    logpath: /nagisa/logs/fund/job
+    logretentiondays: 10
 
-xxl:
-  job:
-    admin:
-      addresses: http://127.0.0.1:8000/xxl-job-admin
-    accessToken: root
-    executor:
-      appname: fund
-      address: http://127.0.0.1:1000
-      ip:
-      port: 9201
-      logpath: /nagisa/logs/undercover/job
-      logretentiondays: 10
+zlp:
+  system:
+    name: fund
+    platform-url: http://127.0.0.1:7000
 
-pushplus:
-  url: http://www.pushplus.plus/send?token={0}&title={1}&content={2}&topic={3}
-  token: 123
-  groupId: 1
+msg:
+  topic: fund
