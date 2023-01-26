@@ -38,4 +38,6 @@ zlp:
     platform-url: http://127.0.0.1:7000
 
 msg:
+  enabled: true
   topic: fund
+  msg-type: 1

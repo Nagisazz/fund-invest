@@ -1,6 +1,7 @@
 package com.nagisazz.fund.service;
 
 import com.alibaba.fastjson.JSONObject;
+import com.nagisazz.base.util.MsgPushHelper;
 import com.nagisazz.fund.dao.FundInfoExtendMapper;
 import com.nagisazz.fund.dao.base.InvestLogMapper;
 import com.nagisazz.fund.entity.FundInfo;
@@ -26,11 +27,11 @@ public class FundCalService {
     @Resource
     private FundInfoExtendMapper fundInfoExtendMapper;
 
-    @Autowired
+    @Resource
     private InvestLogMapper investLogMapper;
 
-    @Autowired
-    private MsgService msgService;
+    @Resource
+    private MsgPushHelper msgPushHelper;
 
     /**
      * 普通交易日计算收益
@@ -153,7 +154,7 @@ public class FundCalService {
                 transPercent(fundInfo.getYields()) + "%，" + wordMean + "均线" +
                 Math.abs(transPercent(Double.parseDouble(worth) / investLog.getMeanAmount() - 1)) +
                 "%。建议今日" + wordInvest;
-        msgService.sendMsg("基金定投提醒", content);
+        msgPushHelper.sendGroupMsg("基金定投提醒", content);
     }
 
     public String crawler(String code) {

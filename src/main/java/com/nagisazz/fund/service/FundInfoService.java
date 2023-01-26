@@ -13,6 +13,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import javax.annotation.Resource;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.chrono.ChronoLocalDate;
@@ -21,7 +22,7 @@ import java.time.chrono.ChronoLocalDate;
 @Service
 public class FundInfoService {
 
-    @Autowired
+    @Resource
     private RestTemplate restTemplate;
 
     @Value("${url.fund}")
