@@ -20,7 +20,6 @@ import java.util.List;
 
 @Slf4j
 @Controller
-@CrossOrigin
 public class FundController {
 
     @Autowired
